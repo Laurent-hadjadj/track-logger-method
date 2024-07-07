@@ -321,4 +321,4 @@ Par exemple pour le projet `track-logger-method` :
 
 On retrouve bien dans les mauvaise pratique les deux "LOGGER" présents dans l’application :
 
-![images](./documentation/images/catch_logger.jpg)
+![images](./documentation/images/catch_logger_info.jpg)
