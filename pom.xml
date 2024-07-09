@@ -9,7 +9,7 @@
 
   <!-- Change this artifactId to your own organization artifactId -->
   <artifactId>track-logger-method</artifactId>
-  <version>1.1.0-RELEASE</version>
+  <version>1.2.0-RELEASE</version>
   <packaging>sonar-plugin</packaging>
 
   <!--  Change the name of the plugin here -->
@@ -154,7 +154,7 @@
           <pluginKey>track-logger-method</pluginKey>
           <pluginName>Track Logger Method</pluginName>
           <PluginDescription>Track logger method :: info, warn, error, debug</PluginDescription>
-          <pluginClass>fr.ma.moulinette.java.MyJavaRulesPlugin</pluginClass>
+          <pluginClass>fr.ma.moulinette.java.MyJavaPlugin</pluginClass>
           <sonarLintSupported>false</sonarLintSupported>
           <skipDependenciesPackaging>true</skipDependenciesPackaging>
           <pluginApiMinVersion>9.14.0.375</pluginApiMinVersion>

@@ -27,6 +27,8 @@ public class MyJavaFileCheckRegistrar implements CheckRegistrar {
 
   /**
    * Register the classes that will be used to instantiate checks during analysis.
+   *
+   * @param registrarContext The context used to register the check classes.
    */
   @Override
   public void register(RegistrarContext registrarContext) {
@@ -35,14 +37,18 @@ public class MyJavaFileCheckRegistrar implements CheckRegistrar {
   }
 
   /**
-   * Lists all the main checks provided by the plugin
+   * Lists all the main checks provided by the plugin.
+   *
+   * @return A list of classes implementing JavaCheck.
    */
   public static List<Class<? extends JavaCheck>> checkClasses() {
     return RulesList.getJavaChecks();
   }
 
   /**
-   * Lists all the test checks provided by the plugin
+   * Lists all the test checks provided by the plugin.
+   *
+   * @return A list of classes implementing JavaCheck.
    */
   public static List<Class<? extends JavaCheck>> testCheckClasses() {
     return RulesList.getJavaTestChecks();

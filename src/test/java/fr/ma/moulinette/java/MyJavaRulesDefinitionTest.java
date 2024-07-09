@@ -31,7 +31,7 @@ class MyJavaRulesDefinitionTest {
   /** On test que le repository name n'est pass null avant de tester l'égalité */
   @SuppressWarnings("findbugs:NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
   void test() {
-    MyJavaRulesDefinition rulesDefinition = new MyJavaRulesDefinition(new MyJavaRulesPluginTest.MockedSonarRuntime());
+    MyJavaRulesDefinition rulesDefinition = new MyJavaRulesDefinition(new MyJavaPluginTest.MockedSonarRuntime());
 
     RulesDefinition.Context context = new RulesDefinition.Context();
     rulesDefinition.define(context);
@@ -76,10 +76,10 @@ class MyJavaRulesDefinitionTest {
     assertThat(repository.rule("track-warn-method").debtRemediationFunction().type()).isEqualTo(Type.CONSTANT_ISSUE);
     assertThat(repository.rule("track-debug-method").debtRemediationFunction().type()).isEqualTo(Type.CONSTANT_ISSUE);
 
-    assertThat(repository.rule("track-info-method").type()).isEqualTo(RuleType.CODE_SMELL);
-    assertThat(repository.rule("track-error-method").type()).isEqualTo(RuleType.CODE_SMELL);
-    assertThat(repository.rule("track-warn-method").type()).isEqualTo(RuleType.CODE_SMELL);
-    assertThat(repository.rule("track-debug-method").type()).isEqualTo(RuleType.CODE_SMELL);
+    assertThat(repository.rule("track-info-method").type()).isEqualTo(RuleType.BUG);
+    assertThat(repository.rule("track-error-method").type()).isEqualTo(RuleType.BUG);
+    assertThat(repository.rule("track-warn-method").type()).isEqualTo(RuleType.BUG);
+    assertThat(repository.rule("track-debug-method").type()).isEqualTo(RuleType.BUG);
   }
 
   private static void assertAllRuleParametersHaveDescription(Repository repository) {

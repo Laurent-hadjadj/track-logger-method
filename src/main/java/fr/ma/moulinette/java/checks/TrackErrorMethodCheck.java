@@ -14,6 +14,9 @@ package fr.ma.moulinette.java.checks;
 import org.sonar.check.Rule;
 import org.sonar.check.Priority;
 
+/**
+ * Custom SonarQube rule implementation to track usage of LOGGER.error().
+ */
 @Rule(
   key = "track-error-method",
   priority = Priority.INFO,
@@ -22,11 +25,22 @@ import org.sonar.check.Priority;
   tags = {"track", "logger", "ma-moulinette"}
 )
 public class TrackErrorMethodCheck extends AbstractTrackLoggerMethodCheck {
+  
+  /**
+   * Specifies the method name to track (error in this case).
+   *
+   * @return The method name "error".
+   */
   @Override
   protected String getMethodName() {
     return "error";
   }
 
+  /**
+   * Specifies the logger message template for error level.
+   *
+   * @return The logger message "Utilisation du Logger en mode : error".
+   */
   @Override
   protected String getLoggerMessage() {
     return "Utilisation du Logger en mode : error";

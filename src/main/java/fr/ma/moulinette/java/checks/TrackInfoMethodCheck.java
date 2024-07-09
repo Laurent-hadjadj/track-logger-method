@@ -14,6 +14,9 @@ package fr.ma.moulinette.java.checks;
 import org.sonar.check.Rule;
 import org.sonar.check.Priority;
 
+/**
+ * Custom SonarQube rule implementation to track usage of LOGGER.info().
+ */
 @Rule(
   key = "track-info-method",
   priority = Priority.INFO,
@@ -22,11 +25,22 @@ import org.sonar.check.Priority;
   tags = {"track", "logger", "ma-moulinette"}
 )
 public class TrackInfoMethodCheck extends AbstractTrackLoggerMethodCheck {
+
+  /**
+   * Specifies the method name to track (info in this case).
+   *
+   * @return The method name "info".
+   */
   @Override
   protected String getMethodName() {
     return "info";
   }
 
+  /**
+   * Specifies the logger message template for info level.
+   *
+   * @return The logger message "Utilisation du Logger en mode : info".
+   */
   @Override
   protected String getLoggerMessage() {
     return "Utilisation du Logger en mode : info";

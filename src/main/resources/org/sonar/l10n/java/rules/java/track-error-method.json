@@ -1,6 +1,6 @@
 {
   "title": "Track Logger method ERROR",
-  "type": "CODE_SMELL",
+  "type": "BUG",
   "status": "READY",
   "remediation": {
     "func": "Constant\/Issue",

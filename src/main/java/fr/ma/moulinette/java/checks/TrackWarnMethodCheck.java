@@ -14,6 +14,9 @@ package fr.ma.moulinette.java.checks;
 import org.sonar.check.Rule;
 import org.sonar.check.Priority;
 
+/**
+ * Custom SonarQube rule implementation to track usage of LOGGER.warn().
+ */
 @Rule(
   key = "track-warn-method",
   priority = Priority.INFO,
@@ -22,11 +25,22 @@ import org.sonar.check.Priority;
   tags = {"track", "logger", "ma-moulinette"}
 )
 public class TrackWarnMethodCheck extends AbstractTrackLoggerMethodCheck {
+
+  /**
+   * Specifies the method name to track (warn in this case).
+   *
+   * @return The method name "warn".
+   */
   @Override
   protected String getMethodName() {
     return "warn";
   }
 
+  /**
+   * Specifies the logger message template for warn level.
+   *
+   * @return The logger message "Utilisation du Logger en mode : warn".
+   */
   @Override
   protected String getLoggerMessage() {
     return "Utilisation du Logger en mode : warn";

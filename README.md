@@ -8,12 +8,21 @@
 
 Cette extension est utilisée dans le cadre du projet **Ma-Moulinette** pour identifier le nombre de logger de type `info`, `error`, `warn` et `debug`.
 
+### Changelog Version 1.2.0-Release
+
+Dans cette version  :
+
+* un nouveau profil Java est ajouté avec les règles ;
+* la javadoc et les commentaires ont été ajoutés ;
+* les règles ne sont plus comptées comme des BUG en INFO mais en BUG en INFO pour ne pas affecter le calcul de la dette technique.
+* Refactor de la classe MyJavaRulePlugin en MyJavaPluglin.
+
 ### Changelog Version 1.1.0-Release
 
 Dans cette version  :
 
 * chaque méthode a fait l'objet d'une règle.
-* une classe abstraite a été ajouté pour éviter de dupliquer le code.
+* une classe abstraite a été ajoutée pour éviter de dupliquer le code.
 * pour chaque issue, un message est affiché.
 * Code Clean et corrections SonarQube.
 * mise à jour des dépendances du pom.xml.
@@ -248,7 +257,20 @@ L'extension est disponible dans le magasin des extensions SonarQube :
 
 ![images](./documentation/images/magasin_sonarqube_1.1.0.jpg)
 
+> **Version 1.2.0**
+
+![images](./documentation/images/magasin_sonarqube_1.2.0.jpg)
+
+Un nouveau profil est disponible pour Java
+
+> **Version 1.2.0**
+
+![images](./documentation/images/profil_1.2.0.jpg)
+
+![images](./documentation/images/profil_liste_regle_1.2.0.jpg)
+
 La règle est présente dans le référentiel des règles Java :
+
 > **Version 1.0.0**
 
 ![images](./documentation/images/repository_java_rules_1.0.0.jpg)
@@ -256,6 +278,10 @@ La règle est présente dans le référentiel des règles Java :
 > **Version 1.1.0**
 
 ![images](./documentation/images/repository_java_rules_1.1.0.jpg)
+
+> **Version 1.2.0**
+
+![images](./documentation/images/repository_java_rules_1.2.0.jpg)
 
 La règle a été ajoutée au profil Java Actif.
 
@@ -266,6 +292,14 @@ La règle a été ajoutée au profil Java Actif.
 > **Version 1.1.0**
 
 ![images](./documentation/images/profil_qualite_1.1.0.jpg)
+
+> **Version 1.2.0**
+
+![images](./documentation/images/profil_qualite_1.2.0.jpg)
+
+Pour ajouter les règles au profil par défaut depuis l'outil de comparaison.
+
+![images](./documentation/images/profil_ajout_regles_1.2.0.jpg)
 
 Pour lancer une analyse d'un projet maven, il suffira de lancer la commande suivante :
 
@@ -293,6 +327,10 @@ Par exemple pour le projet `track-logger-method` :
 > **Version 1.1.0**
 
 ![images](./documentation/images/analyse_projet_1.1.0.jpg)
+
+> **Version 1.2.0**
+
+![images](./documentation/images/analyse_projet_1.2.0.jpg)
 
 On retrouve bien dans les mauvaise pratique les deux "LOGGER" présents dans l’application :
 
