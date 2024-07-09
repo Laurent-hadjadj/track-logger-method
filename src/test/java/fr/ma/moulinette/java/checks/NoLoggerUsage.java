@@ -10,12 +10,11 @@
  *  http://creativecommons.org/licenses/by-nc-sa/4.0/
  */
 
-/**
- * Package fr.ma.moulinette.java is the root package for MaMoulinette's Java code.
- * It contains all the Java classes and resources related to MaMoulinette's functionality.
- */
 package fr.ma.moulinette.java.checks;
 
+/**
+ * [Description NoLoggerUsage]
+ */
 public class NoLoggerUsage {
 
     public void doSomething() {

@@ -8,6 +8,18 @@
 
 Cette extension est utilisée dans le cadre du projet **Ma-Moulinette** pour identifier le nombre de logger de type `info`, `error`, `warn` et `debug`.
 
+### Changelog Version 1.1.0-Release
+
+Dans cette version  :
+
+* chaque méthode a fait l'objet d'une règle.
+* une classe abstraite a été ajouté pour éviter de dupliquer le code.
+* pour chaque issue, un message est affiché.
+* Code Clean et corrections SonarQube.
+* mise à jour des dépendances du pom.xml.
+* correction de la remonté des infos jacoco dans SonarQube.
+* mise à jour de la documentation.
+
 ### Changelog Version 1.0.0-Release
 
 Dans cette première version :
@@ -15,100 +27,11 @@ Dans cette première version :
 * une seule règle a été ajoutée pour détecter les méthodes, `info`, `error`, `warn` et `debug`.
 * une issue est affichée avec le contenu suivant : `Utilisation de la méthode : {method}`.
 
-> Pour récupérer les informations depuis l'API :
-
-```plaintext
-localhost:9000/api/issues/search?componentKeys=fr.ma.moulinette:track-logger-method&rules=track-logger-method:track-logger-method&facets=rules
-```
-
-résultats :
-
-```json
-{
-  "total": 1,
-  "p": 1,
-  "ps": 100,
-  "paging": {
-    "pageIndex": 1,
-    "pageSize": 100,
-    "total": 1
-  },
-  "effortTotal": 1,
-  "issues": [
-    {
-      "key": "AZCMw47VgoTZFLAZDEyF",
-      "rule": "track-logger-method:track-logger-method",
-      "severity": "INFO",
-      "component": "fr.ma.moulinette:track-logger-method:src/main/java/fr/ma/moulinette/java/checks/TrackLoggerMethodCheck.java",
-      "project": "fr.ma.moulinette:track-logger-method",
-      "line": 66,
-      "hash": "a22de1081cff7854feae075eda73a33d",
-      "textRange": {
-        "startLine": 66,
-        "endLine": 66,
-        "startOffset": 6,
-        "endOffset": 63
-      },
-      "flows": [],
-      "status": "OPEN",
-      "message": "Utilisation de la méthode : info",
-      "effort": "1min",
-      "debt": "1min",
-      "author": "",
-      "tags": [
-        "logger",
-        "ma-moulinette",
-        "track"
-      ],
-      "creationDate": "2024-07-07T12:35:27+0200",
-      "updateDate": "2024-07-07T12:35:27+0200",
-      "type": "CODE_SMELL",
-      "scope": "MAIN",
-      "quickFixAvailable": false,
-      "messageFormattings": []
-    }
-  ],
-  "components": [
-    {
-      "key": "fr.ma.moulinette:track-logger-method:src/main/java/fr/ma/moulinette/java/checks/TrackLoggerMethodCheck.java",
-      "enabled": true,
-      "qualifier": "FIL",
-      "name": "TrackLoggerMethodCheck.java",
-      "longName": "src/main/java/fr/ma/moulinette/java/checks/TrackLoggerMethodCheck.java",
-      "path": "src/main/java/fr/ma/moulinette/java/checks/TrackLoggerMethodCheck.java"
-    },
-    {
-      "key": "fr.ma.moulinette:track-logger-method",
-      "enabled": true,
-      "qualifier": "TRK",
-      "name": "SonarQube Java :: TLM :: Track LOGGER Method",
-      "longName": "SonarQube Java :: TLM :: Track LOGGER Method"
-    }
-  ],
-  "facets": [
-    {
-      "property": "rules",
-      "values": [
-        {
-          "val": "findbugs:NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE",
-          "count": 1
-        },
-        {
-          "val": "track-logger-method:track-logger-method",
-          "count": 1
-        }
-      ]
-    }
-  ]
-}
-```
-
 ### Licence
 
 Ce projet est basé sur le projet **custom Rules** pour SonarJava de la société SonarSource.
 
 Lien : <https://github.com/SonarSource/sonar-java/blob/master/docs/CUSTOM_RULES_101.md>
-
 
 The [GNU LGPL 3.0](https://www.gnu.org/licenses/lgpl.txt) license of this GitHub repository does not apply in the `java-custom-rules-example` directory.
 All contents under the `java-custom-rules-example` directory are licensed under the more permissive [MIT No Attribution](LICENSE.txt) license.
@@ -214,7 +137,7 @@ Il faudra lancer cette commande depuis un terminal :
 mvn test
 ```
 
-Si tout va bien, vous devriez avoir ces résulats :
+Si tout va bien, vous devriez avoir ces résultats :
 
 ```plaintext
 [INFO] Results:
@@ -259,10 +182,52 @@ En suite, démarrer ou redémarrer le serveur SonarQube afin que l'extension soi
 2024.07.07 10:42:11 INFO  app[][o.s.a.SchedulerImpl] SonarQube is operational
 ```
 
-> Note : si vous avez l'erreur suivante dans la log web.log, c'est que la version du plugin Java déclarée dans le pom.xml ne correspond pas à la version présente dans votre version de SonarQube.
+> Erreur : Plugin Java Custom Rules [javacustom] is ignored.
 
 ```plaintext
 Plugin Java Custom Rules [javacustom] is ignored because the version 7.28.0.33738 of required plugin [java] is not installed
+```
+
+La version du plugin `sonar-java-plugin` déclarée dans le `pom.xml` ne correspond pas à la version présente dans votre version de SonarQube.
+
+> Erreur : Erreur Plugin Key is missing from manifest.
+
+```plaintext
+2024.07.09 08:29:47 ERROR web[][o.s.s.p.PlatformImpl] Web server startup failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jdk.internal.loader.ClassLoaders$AppClassLoader@659e0bfd-org.sonar.server.plugins.ServerPluginManager': Initialization of bean failed; nested exception is java.lang.NullPointerException: Plugin key is missing from manifest
+```
+
+Le fichier `pom.xml` utilise le plugin `sonar-packaging-maven-plugin` pour générer le manifest nécessaire au dépliement du jar. Au moment de la compilation, les informations suivantes doivent être affichées.
+
+```plaintext
+ --- sonar-packaging-maven-plugin:1.23.0.740:sonar-plugin (default-sonar-plugin) @ track-logger-method ---
+[INFO] -------------------------------------------------------
+[INFO] Plugin definition in update center
+[INFO]     Key: trackloggermethod
+[INFO]     Name: Track Logger Method
+[INFO]     Description: Track logger method for java
+[INFO]     Version: 1.1.0-RELEASE
+[INFO]     Display Version: 1.1.0-RELEASE
+[INFO]     Entry-point Class: fr.ma.moulinette.java.MyJavaRulesPlugin
+[INFO]     Required Plugins: java:7.16.0.30901
+[INFO]     Does the plugin support SonarLint?: false
+[INFO]     Use Child-first ClassLoader: false
+[INFO]     Base Plugin:
+[INFO]     Homepage URL: https://github.com/Laurent-hadjadj/track-logger-method.git
+[INFO]     Minimal Sonar Plugin API Version: 9.14.0.375
+[INFO]     Licensing: CC-BY-NC-SA 4.0
+[INFO]     Organization:
+[INFO]     Organization URL:
+[INFO]     Terms and Conditions:
+[INFO]     Issue Tracker URL: https://github.com/laurent-hadjadj/track-logger-method/issues
+[INFO]     Build date: 2024-07-09T07:12:35+0000
+[INFO]     Sources URL: https://github.com/Laurent-hadjadj/track-logger-method
+[INFO]     Developers:
+[INFO]     Minimal JRE Specification Version: 11
+[INFO]     Minimal Node.js Version:
+[INFO]     Languages for which this plugin should be downloaded: java
+[INFO] Skip packaging of dependencies
+[INFO] -------------------------------------------------------
 ```
 
 Et voila :)
@@ -275,15 +240,32 @@ Et voila :)
 
 L'extension est disponible dans le magasin des extensions SonarQube :
 
-![images](./documentation/images/magasin_sonarqube.jpg)
+> **Version 1.0.0**
+
+![images](./documentation/images/magasin_sonarqube_1.0.0.jpg)
+
+> **Version 1.1.0**
+
+![images](./documentation/images/magasin_sonarqube_1.1.0.jpg)
 
 La règle est présente dans le référentiel des règles Java :
+> **Version 1.0.0**
 
-![images](./documentation/images/repository_java_rules.jpg)
+![images](./documentation/images/repository_java_rules_1.0.0.jpg)
 
-La règle a été ajouté au profil Java Actif.
+> **Version 1.1.0**
 
-![images](./documentation/images/profil_qualite.jpg)
+![images](./documentation/images/repository_java_rules_1.1.0.jpg)
+
+La règle a été ajoutée au profil Java Actif.
+
+> **Version 1.0.0**
+
+![images](./documentation/images/profil_qualite_1.1.0.jpg)
+
+> **Version 1.1.0**
+
+![images](./documentation/images/profil_qualite_1.1.0.jpg)
 
 Pour lancer une analyse d'un projet maven, il suffira de lancer la commande suivante :
 
@@ -294,19 +276,6 @@ mvn sonar:sonar
 Lors de l'analyse une trace est affiché dans la console.
 
 ```plaintext
-[INFO] 11:10:19.852 Catch method call: expression memberSelect
-[INFO] 11:10:19.852 Is logger method: false
-[INFO] 11:10:19.853 Catch method call: info LOGGER
-[INFO] 11:10:19.853 Is logger method: true
-[INFO] 11:10:19.869 Catch method call: equals org.sonar.java.model.expression.LiteralTreeImpl@7491ccdf
-[INFO] 11:10:19.869 Is logger method: false
-[INFO] 11:10:19.872 Catch method call: equals org.sonar.java.model.expression.LiteralTreeImpl@238bee26
-[INFO] 11:10:19.872 Is logger method: false
-[INFO] 11:10:19.872 Catch method call: contains LOGGER_METHODS
-[INFO] 11:10:19.872 Is logger method: false
-[INFO] 11:10:19.876 Catch method call: info LOGGER
-[INFO] 11:10:19.877 Is logger method: true
-....
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
@@ -317,8 +286,33 @@ Lors de l'analyse une trace est affiché dans la console.
 
 Par exemple pour le projet `track-logger-method` :
 
-![images](./documentation/images/analyse_projet.jpg)
+> **Version 1.0.0**
+
+![images](./documentation/images/analyse_projet_1.0.0.jpg)
+
+> **Version 1.1.0**
+
+![images](./documentation/images/analyse_projet_1.1.0.jpg)
 
 On retrouve bien dans les mauvaise pratique les deux "LOGGER" présents dans l’application :
 
-![images](./documentation/images/catch_logger_info.jpg)
+![images](./documentation/images/catch_logger_info_1.0.0.jpg)
+
+## Récupération des métriques
+
+Depuis d'application Ma-Moulinette, il est possible d'obtenir le nombre de fois qu'un Logger est utilisé en fonction de sa méthode (info, warn, error ou debug).
+
+La requête utilisée est la suivante :
+
+```plaintext
+GET: api/issues/search?componentKeys=<fr.ma.moulinette:track-logger-method>&rules=<track-logger-method:track-logger-method>&facets=rules&statuses=OPEN
+```
+
+Avec :
+
+* [x] **componentKeys** : la clé unique du projet ;
+$ [x] **rules** : la règle que l'on recherche ;
+* [x] **facets** : le filtre de consolidation des données ;
+* [ ] **statuses** : le status de issue.
+
+Pour remonter uniquement les Logger avec une méthode (info, warn, error, debug), il suffit de définir le `statuses` à `OPEN`.

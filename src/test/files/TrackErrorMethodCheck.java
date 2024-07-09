@@ -10,11 +10,14 @@
  *  http://creativecommons.org/licenses/by-nc-sa/4.0/
  */
 
-public class NoLoggerUsage {
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-    public void doSomething() {
-        // Aucun appel de méthode de journalisation ici
-        System.out.println("Doing something...");
-    }
+class LoggerClass {
+  private static final Logger LOGGER = LoggerFactory.getLogger(LoggerClass.class);
+
+  public void error() {
+    LOGGER.error("Catch logger ERROR"); // Noncompliant {{Utilisation du Logger en mode : error}}
+  }
 
 }

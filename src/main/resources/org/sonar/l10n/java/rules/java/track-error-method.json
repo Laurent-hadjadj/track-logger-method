@@ -1,5 +1,5 @@
 {
-  "title": "Track Logger method (info, warn, error, debug, trace)",
+  "title": "Track Logger method ERROR",
   "type": "CODE_SMELL",
   "status": "READY",
   "remediation": {
@@ -13,5 +13,5 @@
   ],
   "defaultSeverity": "Info",
   "scope": "Main",
-  "description": "<p>Using LOGGER methods like info, warn, error, debug should be avoided in this context.</p>"
+  "description": "<p>Using LOGGER methods error should be avoided in this context.</p>"
 }

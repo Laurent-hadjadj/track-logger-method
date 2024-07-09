@@ -29,7 +29,7 @@ public class MyJavaRulesDefinition implements RulesDefinition {
   private static final String RESOURCE_BASE_PATH = "org/sonar/l10n/java/rules/java";
 
   public static final String REPOSITORY_KEY = "track-logger-method";
-  public static final String REPOSITORY_NAME = "MaMoulinette Custom Repository";
+  public static final String REPOSITORY_NAME = "java";
 
   // Add the rule keys of the rules which need to be considered as template-rules
   private static final Set<String> RULE_TEMPLATES_KEY = Collections.emptySet();
@@ -43,7 +43,7 @@ public class MyJavaRulesDefinition implements RulesDefinition {
   @Override
   public void define(Context context) {
 
-    var repository = context.createRepository(REPOSITORY_KEY, "java").setName(REPOSITORY_NAME);
+    var repository = context.createRepository(REPOSITORY_KEY, REPOSITORY_NAME).setName(REPOSITORY_NAME);
     var ruleMetadataLoader = new RuleMetadataLoader(RESOURCE_BASE_PATH, runtime);
 
     ruleMetadataLoader.addRulesByAnnotatedClass(repository, new ArrayList<>(RulesList.getChecks()));

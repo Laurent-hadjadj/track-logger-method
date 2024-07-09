@@ -37,3 +37,4 @@ replay_pid*
 ### Pom templates
 pom_SQ_8.xml
 pom_SQ_9.xml
+dependency-reduced-pom.xml

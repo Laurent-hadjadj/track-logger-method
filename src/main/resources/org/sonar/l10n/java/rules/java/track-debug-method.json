@@ -1,0 +1,17 @@
+{
+  "title": "Track Logger method DEBUG",
+  "type": "CODE_SMELL",
+  "status": "READY",
+  "remediation": {
+    "func": "Constant\/Issue",
+    "constantCost": "1min"
+  },
+  "tags": [
+    "track",
+    "logger",
+    "ma-moulinette"
+  ],
+  "defaultSeverity": "Info",
+  "scope": "Main",
+  "description": "<p>Using LOGGER methods debug should be avoided in this context.</p>"
+}

@@ -15,8 +15,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.sonar.plugins.java.api.JavaCheck;
-import fr.ma.moulinette.java.checks.TrackLoggerMethodCheck;
+import fr.ma.moulinette.java.checks.TrackInfoMethodCheck;
+import fr.ma.moulinette.java.checks.TrackWarnMethodCheck;
+import fr.ma.moulinette.java.checks.TrackErrorMethodCheck;
+import fr.ma.moulinette.java.checks.TrackDebugMethodCheck;
 
+/**
+ * [Description RulesList]
+ */
 public final class RulesList {
 
   private RulesList() {
@@ -30,9 +36,13 @@ public final class RulesList {
   }
 
   public static List<Class<? extends JavaCheck>> getJavaChecks() {
-    return Collections.singletonList(TrackLoggerMethodCheck.class);
+    List<Class<? extends JavaCheck>> checks = new ArrayList<>();
+    checks.add(TrackInfoMethodCheck.class);
+    checks.add(TrackErrorMethodCheck.class);
+    checks.add(TrackWarnMethodCheck.class);
+    checks.add(TrackDebugMethodCheck.class);
+    return checks;
   }
-
 
   public static List<Class<? extends JavaCheck>> getJavaTestChecks() {
     return Collections.emptyList();

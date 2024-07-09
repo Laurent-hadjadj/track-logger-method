@@ -10,8 +10,14 @@
  *  http://creativecommons.org/licenses/by-nc-sa/4.0/
  */
 
-/**
- * Package fr.ma.moulinette.java.checks is the root package for MaMoulinette's Java code.
- * It contains all the Java classes and resources related to MaMoulinette's functionality.
- */
-package fr.ma.moulinette.java.checks;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+class LoggerClass {
+  private static final Logger LOGGER = LoggerFactory.getLogger(LoggerClass.class);
+
+  public void warn() {
+    LOGGER.warn("Catch logger WARN"); // Noncompliant {{Utilisation du Logger en mode : warn}}
+  }
+
+}

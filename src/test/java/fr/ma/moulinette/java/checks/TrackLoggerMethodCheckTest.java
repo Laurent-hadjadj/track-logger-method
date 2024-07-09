@@ -10,38 +10,58 @@
  *  http://creativecommons.org/licenses/by-nc-sa/4.0/
  */
 
-/**
- * Package fr.ma.moulinette.java.checks is the root package for MaMoulinette's Java code.
- * It contains all the Java classes and resources related to MaMoulinette's functionality.
- */
 package fr.ma.moulinette.java.checks;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.sonar.java.checks.verifier.CheckVerifier;
 
+/**
+ * [Description TrackLoggerMethodCheckTest]
+ */
 class TrackLoggerMethodCheckTest {
 
-    private TrackLoggerMethodCheck check;
-
-    @BeforeEach
-    public void setUp() {
-        check = new TrackLoggerMethodCheck();
-    }
-
     @Test
-    void testLoggerMethods() {
+    @SuppressWarnings("pmd-unit-tests:JUnitTestsShouldIncludeAssert")
+    void testInfoMethod() {
         CheckVerifier.newVerifier()
-                .onFile("src/test/files/TrackLoggerMethodCheck.java")
-                .withCheck(check)
-                .verifyIssues();
+            .onFile("src/test/files/TrackInfoMethodCheck.java")
+            .withCheck(new TrackInfoMethodCheck())
+            .verifyIssues();
     }
 
     @Test
+    @SuppressWarnings("pmd-unit-tests:JUnitTestsShouldIncludeAssert")
+    void testErrorMethod() {
+        CheckVerifier.newVerifier()
+            .onFile("src/test/files/TrackErrorMethodCheck.java")
+            .withCheck(new TrackErrorMethodCheck())
+            .verifyIssues();
+    }
+
+    @Test
+    @SuppressWarnings("pmd-unit-tests:JUnitTestsShouldIncludeAssert")
+    void testWarnMethod() {
+        CheckVerifier.newVerifier()
+            .onFile("src/test/files/TrackWarnMethodCheck.java")
+            .withCheck(new TrackWarnMethodCheck())
+            .verifyIssues();
+    }
+
+    @Test
+    @SuppressWarnings("pmd-unit-tests:JUnitTestsShouldIncludeAssert")
+    void testDebugMethod() {
+        CheckVerifier.newVerifier()
+            .onFile("src/test/files/TrackDebugMethodCheck.java")
+            .withCheck(new TrackDebugMethodCheck())
+            .verifyIssues();
+    }
+
+    @Test
+    @SuppressWarnings("pmd-unit-tests:JUnitTestsShouldIncludeAssert")
     void testNoLoggerMethods() {
         CheckVerifier.newVerifier()
-                .onFile("src/test/files/NoLoggerUsage.java")
-                .withCheck(check)
-                .verifyNoIssues();
+            .onFile("src/test/files/NoLoggerUsage.java")
+            .withCheck(new TrackInfoMethodCheck())
+            .verifyNoIssues();
     }
 }

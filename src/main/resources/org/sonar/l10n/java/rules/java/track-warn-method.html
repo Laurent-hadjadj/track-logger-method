@@ -1,0 +1,12 @@
+<p>Cette règle permet de traquer l'utilisation de la méthode WARN du Logger.</p>
+<h2>Noncompliant Code Example</h2>
+<pre>
+  gameState.print(System.out);
+  System.out.println("The board is full. You lost!");
+</pre>
+<h2>Compliant Solution</h2>
+<pre>
+    LOGGER.info("The board is full. You lost!");
+    // other invocation
+    log.info("The board is full. You lost!");
+</pre>

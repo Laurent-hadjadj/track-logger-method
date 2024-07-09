@@ -9,7 +9,7 @@
 
   <!-- Change this artifactId to your own organization artifactId -->
   <artifactId>track-logger-method</artifactId>
-  <version>1.0.0-RELEASE</version>
+  <version>1.1.0-RELEASE</version>
   <packaging>sonar-plugin</packaging>
 
   <!--  Change the name of the plugin here -->
@@ -20,6 +20,7 @@
   <url>https://github.com/Laurent-hadjadj/track-logger-method.git</url>
   <inceptionYear>2024</inceptionYear>
 
+  <!-- Licence -->
   <licenses>
     <license>
       <name>CC-BY-NC-SA 4.0</name>
@@ -28,6 +29,7 @@
     </license>
   </licenses>
 
+  <!-- Equipe de développement -->
   <contributors>
     <contributor>
       <name>Laurent HADJADJ</name>
@@ -35,6 +37,7 @@
     </contributor>
   </contributors>
 
+  <!-- outil de gestion des sources-->
   <scm>
     <connection>scm:git:https://github.com/laurent-hadjadj/track-logger-method.git</connection>
     <developerConnection>scm:git:https@github.com/laurent-hadjadj/track-logger-method.git</developerConnection>
@@ -42,11 +45,13 @@
     <tag>HEAD</tag>
   </scm>
 
+  <!-- Outil de gestion des anomalies -->
   <issueManagement>
     <system>GitHub</system>
     <url>https://github.com/laurent-hadjadj/track-logger-method/issues</url>
   </issueManagement>
 
+  <!-- Gestion des versions -->
   <properties>
     <!-- Version de SonarQube -->
     <sonarqube.version>9.9.4.87374</sonarqube.version>
@@ -54,18 +59,20 @@
     <sonar.plugin.api.version>9.17.0.587</sonar.plugin.api.version>
     <!-- Version du plugin sonar-java-->
     <sonarjava.version>7.16.0.30901</sonarjava.version>
-
-    <jacoco.version>0.8.10</jacoco.version>
+    <jacoco.version>0.8.12</jacoco.version>
     <!-- Use UTF-8 for all resources -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <!-- Compilation et build Java 11 -->
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
     <maven.compiler.release>11</maven.compiler.release>
+    <!-- Définition du chemin pour les rapports jacoco -->
+    <sonar.coverage.jacoco.xmlReportPaths>target/jacoco-xml/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
   </properties>
 
   <dependencies>
     <!-- MAIN sources dependencies -->
+    <!-- Sonarqube API plugin -->
     <dependency>
       <groupId>org.sonarsource.api.plugin</groupId>
       <artifactId>sonar-plugin-api</artifactId>
@@ -73,6 +80,7 @@
       <scope>provided</scope>
     </dependency>
 
+    <!-- Gestion des logs -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
@@ -80,6 +88,7 @@
       <scope>provided</scope>
     </dependency>
 
+    <!-- Plugin Java pour sonar-->
     <dependency>
       <groupId>org.sonarsource.java</groupId>
       <artifactId>sonar-java-plugin</artifactId>
@@ -88,10 +97,11 @@
       <scope>provided</scope>
     </dependency>
 
+    <!-- Analyser/parseur de code  -->
     <dependency>
       <groupId>org.sonarsource.analyzer-commons</groupId>
       <artifactId>sonar-analyzer-commons</artifactId>
-      <version>1.24.0.965</version>
+      <version>2.11.0.2861</version>
     </dependency>
 
     <!-- TEST sources dependencies -->
@@ -102,33 +112,39 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- version to be specified manually -->
+    <!-- JUnit Jupiter is the API for writing tests using JUnit 5-->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
       <version>5.7.0</version>
       <scope>test</scope>
     </dependency>
-
-    <!-- version to be specified manually -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-migrationsupport</artifactId>
       <version>5.7.0</version>
       <scope>test</scope>
     </dependency>
-
-    <!-- version to be specified manually -->
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
       <version>3.23.1</version>
       <scope>test</scope>
     </dependency>
+
+    <!-- Mockito mock objects library core API and implementation -->
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>5.12.0</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
+  <!-- Construction-->
   <build>
     <plugins>
+      <!-- SonarQube :: Packaging Maven Plugin -->
       <plugin>
         <groupId>org.sonarsource.sonar-packaging-maven-plugin</groupId>
         <artifactId>sonar-packaging-maven-plugin</artifactId>
@@ -137,8 +153,9 @@
         <configuration>
           <pluginKey>track-logger-method</pluginKey>
           <pluginName>Track Logger Method</pluginName>
+          <PluginDescription>Track logger method :: info, warn, error, debug</PluginDescription>
           <pluginClass>fr.ma.moulinette.java.MyJavaRulesPlugin</pluginClass>
-          <sonarLintSupported>true</sonarLintSupported>
+          <sonarLintSupported>false</sonarLintSupported>
           <skipDependenciesPackaging>true</skipDependenciesPackaging>
           <pluginApiMinVersion>9.14.0.375</pluginApiMinVersion>
           <requirePlugins>java:${sonarjava.version}</requirePlugins>
@@ -148,9 +165,10 @@
       </plugin>
 
       <plugin>
+        <!-- Repackages the project classes together with their dependencies into a single uber-jar, optionally renaming classes or removing unused classes. -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>3.2.4</version>
+        <version>3.6.0</version>
         <configuration>
         </configuration>
         <executions>
@@ -163,16 +181,18 @@
         </executions>
       </plugin>
 
+      <!-- The Compiler Plugin is used to compile the sources of your project. -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.0</version>
+        <version>3.9.0</version>
         <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
+          <source>1.11</source>
+          <target>1.11</target>
         </configuration>
       </plugin>
 
+      <!-- The JaCoCo Maven Plugin provides the JaCoCo runtime agent to your tests and allows basic report creation. -->
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
@@ -191,6 +211,11 @@
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <destFile>target/jacoco.exec</destFile>
+          <outputDirectory>target/jacoco-xml</outputDirectory>
+          <outputEncoding>UTF-8</outputEncoding>
+        </configuration>
       </plugin>
 
       <!-- only required to run UT - these are UT dependencies -->

@@ -21,6 +21,9 @@ import org.sonar.api.utils.Version;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+/**
+ * [Description MyJavaRulesPluginTest]
+ */
 class MyJavaRulesPluginTest {
 
   @Test
