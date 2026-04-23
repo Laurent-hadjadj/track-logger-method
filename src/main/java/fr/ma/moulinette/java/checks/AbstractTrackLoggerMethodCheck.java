@@ -72,7 +72,7 @@ public abstract class AbstractTrackLoggerMethodCheck extends IssuableSubscriptio
    * @param tree The METHOD_INVOCATION syntax tree node.
    */
   @Override
-  public void visitNode(Tree tree) {
+  public void visitNode(@Nonnull Tree tree) {
     MethodInvocationTree methodInvocation = (MethodInvocationTree) tree;
     if (isLoggerMethod(methodInvocation, getMethodName())) {
       reportIssue(methodInvocation, getLoggerMessage());
@@ -95,6 +95,7 @@ public abstract class AbstractTrackLoggerMethodCheck extends IssuableSubscriptio
     MemberSelectExpressionTree memberSelect = (MemberSelectExpressionTree) expression;
     var identifier = memberSelect.identifier().name();
     var expressionName = memberSelect.expression().toString();
-    return ("LOGGER".equals(expressionName) || "log".equals(expressionName)) && methodName.equals(identifier);
+    /** On détecte les verbe LOGGER et LOG uniquement */
+    return ("LOGGER".equals(expressionName) || "LOG".equals(expressionName)) && methodName.equals(identifier);
   }
 }

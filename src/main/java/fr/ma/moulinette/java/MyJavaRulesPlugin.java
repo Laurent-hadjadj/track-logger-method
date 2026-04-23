@@ -11,6 +11,7 @@
  */
 package fr.ma.moulinette.java;
 
+import javax.annotation.Nonnull;
 import org.sonar.api.Plugin;
 
 /**
@@ -19,7 +20,7 @@ import org.sonar.api.Plugin;
 public class MyJavaRulesPlugin implements Plugin {
 
   @Override
-  public void define(Context context) {
+  public void define(@Nonnull Context context) {
     // server extensions -> objects are instantiated during server startup
     context.addExtension(MyJavaRulesDefinition.class);
 

@@ -11,6 +11,8 @@
  */
 package fr.ma.moulinette.java;
 
+import javax.annotation.Nonnull;
+
 import org.sonar.api.Plugin;
 
 /**
@@ -25,7 +27,7 @@ public class MyJavaPlugin implements Plugin {
    * @param context The context in which extensions are defined.
    */
   @Override
-  public void define(Context context) {
+  public void define(@Nonnull Context context) {
     // Register the MyJavaRulesDefinition as a server-side extension,
     // which defines the rules repository and rule metadata.
     context.addExtension(MyJavaRulesDefinition.class);

@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.Set;
+
+import javax.annotation.Nonnull;
+
 import org.sonar.api.SonarRuntime;
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonarsource.analyzer.commons.RuleMetadataLoader;
@@ -53,7 +56,7 @@ public class MyJavaRulesDefinition implements RulesDefinition {
    * @param context The context in which the rules repository is defined.
    */
   @Override
-  public void define(Context context) {
+  public void define(@Nonnull Context context) {
     // Create a new repository for the rules with the specified key and name
     var repository = context.createRepository(REPOSITORY_KEY, REPOSITORY_NAME).setName(REPOSITORY_NAME);
 
@@ -80,4 +83,3 @@ public class MyJavaRulesDefinition implements RulesDefinition {
       .forEach(rule -> rule.setTemplate(true));
   }
 }
-

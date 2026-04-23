@@ -8,6 +8,14 @@
 
 Cette extension est utilisée dans le cadre du projet **Ma-Moulinette** pour identifier le nombre de logger de type `info`, `error`, `warn` et `debug`.
 
+### Changelog Version 1.3.0-Release
+
+Dans cette version :
+
+* les logger détectés sont : LOGGER et LOG ;
+* ajout de javax.annotation.Nonnull pour éviter les problèmes de nullité ;
+* Compatible avec la version 9.9.4 de SonarQube.
+
 ### Changelog Version 1.2.0-Release
 
 Dans cette version  :

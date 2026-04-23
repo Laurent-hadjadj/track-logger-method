@@ -11,6 +11,8 @@
  */
 package fr.ma.moulinette.java;
 
+import javax.annotation.Nonnull;
+
 import org.sonar.api.server.profile.BuiltInQualityProfilesDefinition;
 import org.sonar.plugins.java.Java;
 /**
@@ -28,7 +30,7 @@ public final class MyJavaQualityProfile implements BuiltInQualityProfilesDefinit
    * @param context The context in which the profile is defined.
    */
   @Override
-  public void define(Context context) {
+  public void define(@Nonnull Context context) {
 
     // Create a new built-in quality profile for Java language
     NewBuiltInQualityProfile profile = context.createBuiltInQualityProfile(QUALITY_PROFILE_NAME, Java.KEY);

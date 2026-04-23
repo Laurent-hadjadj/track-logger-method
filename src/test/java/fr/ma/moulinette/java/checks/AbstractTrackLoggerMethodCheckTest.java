@@ -6,6 +6,7 @@ import org.sonar.plugins.java.api.tree.Tree.Kind;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -15,19 +16,19 @@ class AbstractTrackLoggerMethodCheckTest {
     void testNodesToVisit() {
         AbstractTrackLoggerMethodCheck check = new AbstractTrackLoggerMethodCheck() {
             @Override
-            public void visitNode(Tree tree) {
+            public void visitNode(@Nonnull Tree tree) {
                 // Cette méthode n'est pas testée directement ici
             }
 
             @Override
             protected String getMethodName() {
-              // TODO Auto-generated method stub
+              // TO.DO Auto-generated method stub
               throw new UnsupportedOperationException("Unimplemented method 'getMethodName'");
             }
 
             @Override
             protected String getLoggerMessage() {
-              // TODO Auto-generated method stub
+              // TO.DO Auto-generated method stub
               throw new UnsupportedOperationException("Unimplemented method 'getLoggerMessage'");
             }
         };

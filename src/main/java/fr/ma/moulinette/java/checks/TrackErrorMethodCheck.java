@@ -25,7 +25,7 @@ import org.sonar.check.Priority;
   tags = {"track", "logger", "ma-moulinette"}
 )
 public class TrackErrorMethodCheck extends AbstractTrackLoggerMethodCheck {
-  
+
   /**
    * Specifies the method name to track (error in this case).
    *

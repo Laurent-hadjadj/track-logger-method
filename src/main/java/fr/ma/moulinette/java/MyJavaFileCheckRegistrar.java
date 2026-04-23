@@ -12,6 +12,9 @@
 package fr.ma.moulinette.java;
 
 import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import org.sonar.plugins.java.api.CheckRegistrar;
 import org.sonar.plugins.java.api.JavaCheck;
 import org.sonarsource.api.sonarlint.SonarLintSide;
@@ -31,7 +34,7 @@ public class MyJavaFileCheckRegistrar implements CheckRegistrar {
    * @param registrarContext The context used to register the check classes.
    */
   @Override
-  public void register(RegistrarContext registrarContext) {
+  public void register(@Nonnull RegistrarContext registrarContext) {
     // Call to registerClassesForRepository to associate the classes with the correct repository key
     registrarContext.registerClassesForRepository(MyJavaRulesDefinition.REPOSITORY_KEY, checkClasses(), testCheckClasses());
   }
