@@ -1,9 +1,7 @@
 # Changelog
 
 Toutes les modifications notables de ce projet sont documentées dans ce fichier.
-Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/).
-
----
+Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/).
 
 ## [2.0.0-RELEASE] - 2026-07-19
 
@@ -48,7 +46,7 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
   compteurs et ratios corrects et cohérents entre eux, aucune erreur de mesure dupliquée — confirme
   le fix du bug des ratios.
 
-### Modifié
+### Modifié en 2.0.0
 
 - **`README.md`** : réduit à une page d'accueil (présentation, démarrage rapide, liens vers les
   guides et le changelog) ; le contenu détaillé (architecture, stratégie de compatibilité,
@@ -95,7 +93,7 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
   passage, corrigé le Javadoc de package `checks/package-info.java`, qui était un copier-coller
   erroné du package racine.
 
-### Corrigé
+### Corrigé en 2.0.0
 
 - `context.module()` remplacé par `context.project()` (déprécié en SonarQube 9.x,
   retiré en 10.x).
@@ -115,29 +113,7 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
 
 ---
 
-## [1.0.0-RELEASE] - 2024
-
-### Ajouté en 1.0.0
-
-- Détection des appels logger Java par niveau : `error`, `warn`, `info`, `debug`.
-- Règles SonarQube associées : `track-error-method`, `track-warn-method`,
-  `track-info-method`, `track-debug-method`.
-- Profil qualité intégré `Ma-Moulinette` avec toutes les règles pré-activées.
-- Détection basée sur le nom de variable conventionnel (`LOGGER`, `LOG`).
-- Compatible SonarQube 9.9 LTS, Java 11+.
-
-### Changelog Version 2.0.0-Release
-
-Attention : cette version n'est pas compatible avec les versions de SonarQube 8.9 LTS et 9.9 LTS.
-
-Dans cette version :
-
-- ajout des metrics sonarqube pour différencier les méthodes de logger ;
-- java 17 pour le développement et la compilation ;
-- mise à jour de la documentation.
-- au lieu de lire les issues dans le Sensor, on accumule les compteurs directement dans les checks via un singleton LoggerCounter injecté dans le contexte SonarQube.
-
-### Changelog Version 1.3.0-Release
+## [1.3.0-RELEASE] - 2026-04-23
 
 Dans cette version :
 
@@ -145,18 +121,22 @@ Dans cette version :
 - ajout de javax.annotation.Nonnull pour éviter les problèmes de nullité ;
 - Compatible avec la version 9.9.4 de SonarQube.
 
-### Changelog Version 1.2.0-Release
+---
 
-Dans cette version  :
+## [1.2.0-RELEASE] - 2024-07-09
+
+Dans cette version :
 
 - un nouveau profil Java est ajouté avec les règles ;
 - la javadoc et les commentaires ont été ajoutés ;
 - les règles ne sont plus comptées comme des BUG en INFO mais en BUG en INFO pour ne pas affecter le calcul de la dette technique.
 - Refactor de la classe MyJavaRulePlugin en MyJavaPluglin.
 
-### Changelog Version 1.1.0-Release
+---
 
-Dans cette version  :
+## [1.1.0-RELEASE] - 2024-07-09
+
+Dans cette version :
 
 - chaque méthode a fait l'objet d'une règle.
 - une classe abstraite a été ajoutée pour éviter de dupliquer le code.
@@ -166,9 +146,16 @@ Dans cette version  :
 - correction de la remonté des infos jacoco dans SonarQube.
 - mise à jour de la documentation.
 
-### Changelog Version 1.0.0-Release
+---
 
-Dans cette première version :
+## [1.0.0-RELEASE] - 2024-07-07
 
-- une seule règle a été ajoutée pour détecter les méthodes, `info`, `error`, `warn` et `debug`.
-- une issue est affichée avec le contenu suivant : `Utilisation de la méthode : {method}`.
+- Détection des appels logger Java par niveau : `error`, `warn`, `info`, `debug`.
+- Règles SonarQube associées : `track-error-method`, `track-warn-method`,
+  `track-info-method`, `track-debug-method`.
+- Profil qualité intégré `Ma-Moulinette` avec toutes les règles pré-activées.
+- Détection basée sur le nom de variable conventionnel (`LOGGER`, `LOG`).
+- Compatible SonarQube 9.9 LTS, Java 11+.
+- Première itération : une seule règle générique pour détecter les méthodes `info`, `error`,
+  `warn` et `debug`, avec une issue affichant `Utilisation de la méthode : {method}` — remplacée
+  en cours de version par les 4 règles dédiées listées ci-dessus.
