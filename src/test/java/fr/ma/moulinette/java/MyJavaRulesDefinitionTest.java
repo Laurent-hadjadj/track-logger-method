@@ -2,7 +2,7 @@
  *      Ma-Moulinette
  *  -=track-logger-method=-
  *  -------------------------
- *  Copyright (c) 2015-2024.
+ *  Copyright (c) 2015-2026.
  *  Laurent HADJADJ <laurent_h@me.com>.
  *  Licensed Creative Common  CC-BY-NC-SA 4.0.
  *  ---
@@ -26,6 +26,12 @@ import static org.assertj.core.api.Assertions.assertThat;
  * [Description MyJavaRulesDefinitionTest]
  */
 class MyJavaRulesDefinitionTest {
+
+  private static final String RULE_INFO = "track-info-method";
+  private static final String RULE_ERROR = "track-error-method";
+  private static final String RULE_WARN = "track-warn-method";
+  private static final String RULE_DEBUG = "track-debug-method";
+  private static final String RULE_TRACE = "track-trace-method";
 
   @Test
   /** On test que le repository name n'est pass null avant de tester l'égalité */
@@ -51,35 +57,42 @@ class MyJavaRulesDefinitionTest {
 
   @SuppressWarnings("findbugs:NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
   private static void assertRuleProperties(Repository repository) {
-    assertThat(repository.rule("track-info-method"))
+    assertThat(repository.rule(RULE_INFO))
       .isNotNull()
       .extracting(Rule::name)
       .isEqualTo("Track Logger method INFO");
 
-    assertThat(repository.rule("track-error-method"))
+    assertThat(repository.rule(RULE_ERROR))
       .isNotNull()
       .extracting(Rule::name)
       .isEqualTo("Track Logger method ERROR");
 
-    assertThat(repository.rule("track-warn-method"))
+    assertThat(repository.rule(RULE_WARN))
       .isNotNull()
       .extracting(Rule::name)
       .isEqualTo("Track Logger method WARN");
 
-    assertThat(repository.rule("track-debug-method"))
+    assertThat(repository.rule(RULE_DEBUG))
       .isNotNull()
       .extracting(Rule::name)
       .isEqualTo("Track Logger method DEBUG");
 
-    assertThat(repository.rule("track-info-method").debtRemediationFunction().type()).isEqualTo(Type.CONSTANT_ISSUE);
-    assertThat(repository.rule("track-error-method").debtRemediationFunction().type()).isEqualTo(Type.CONSTANT_ISSUE);
-    assertThat(repository.rule("track-warn-method").debtRemediationFunction().type()).isEqualTo(Type.CONSTANT_ISSUE);
-    assertThat(repository.rule("track-debug-method").debtRemediationFunction().type()).isEqualTo(Type.CONSTANT_ISSUE);
+    assertThat(repository.rule(RULE_TRACE))
+      .isNotNull()
+      .extracting(Rule::name)
+      .isEqualTo("Track Logger method TRACE");
 
-    assertThat(repository.rule("track-info-method").type()).isEqualTo(RuleType.BUG);
-    assertThat(repository.rule("track-error-method").type()).isEqualTo(RuleType.BUG);
-    assertThat(repository.rule("track-warn-method").type()).isEqualTo(RuleType.BUG);
-    assertThat(repository.rule("track-debug-method").type()).isEqualTo(RuleType.BUG);
+    assertThat(repository.rule(RULE_INFO).debtRemediationFunction().type()).isEqualTo(Type.CONSTANT_ISSUE);
+    assertThat(repository.rule(RULE_ERROR).debtRemediationFunction().type()).isEqualTo(Type.CONSTANT_ISSUE);
+    assertThat(repository.rule(RULE_WARN).debtRemediationFunction().type()).isEqualTo(Type.CONSTANT_ISSUE);
+    assertThat(repository.rule(RULE_DEBUG).debtRemediationFunction().type()).isEqualTo(Type.CONSTANT_ISSUE);
+    assertThat(repository.rule(RULE_TRACE).debtRemediationFunction().type()).isEqualTo(Type.CONSTANT_ISSUE);
+
+    assertThat(repository.rule(RULE_INFO).type()).isEqualTo(RuleType.CODE_SMELL);
+    assertThat(repository.rule(RULE_ERROR).type()).isEqualTo(RuleType.CODE_SMELL);
+    assertThat(repository.rule(RULE_WARN).type()).isEqualTo(RuleType.CODE_SMELL);
+    assertThat(repository.rule(RULE_DEBUG).type()).isEqualTo(RuleType.CODE_SMELL);
+    assertThat(repository.rule(RULE_TRACE).type()).isEqualTo(RuleType.CODE_SMELL);
   }
 
   private static void assertAllRuleParametersHaveDescription(Repository repository) {

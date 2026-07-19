@@ -2,7 +2,7 @@
  *      Ma-Moulinette
  *  -=track-logger-method=-
  *  -------------------------
- *  Copyright (c) 2015-2024.
+ *  Copyright (c) 2015-2026.
  *  Laurent HADJADJ <laurent_h@me.com>.
  *  Licensed Creative Common  CC-BY-NC-SA 4.0.
  *  ---
@@ -22,7 +22,17 @@ import org.sonar.api.utils.Version;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * [Description MyJavaRulesPluginTest]
+ * Vérifie que {@link MyJavaPlugin} enregistre exactement les extensions attendues.
+ *
+ * Extensions originales :
+ *   - MyJavaRulesDefinition
+ *   - MyJavaFileCheckRegistrar
+ *   - MyJavaQualityProfile
+ *
+ * Extensions ajoutées pour les métriques par framework :
+ *   - LoggerMetrics       (déclaration des métriques custom)
+ *   - LoggerCounter       (compteur partagé @ScannerSide)
+ *   - LoggerMetricsSensor (publication des métriques)
  */
 class MyJavaPluginTest {
 
@@ -33,18 +43,24 @@ class MyJavaPluginTest {
     new MyJavaPlugin().define(context);
 
     assertThat(context.getExtensions())
-      .extracting(ext -> ((Class) ext).getSimpleName())
+      .extracting(ext -> ((Class<?>) ext).getSimpleName())
       .containsExactlyInAnyOrder(
+        // Extensions originales
         "MyJavaRulesDefinition",
         "MyJavaFileCheckRegistrar",
-        "MyJavaQualityProfile");
+        "MyJavaQualityProfile",
+        // Extensions métriques par framework
+        "LoggerMetrics",
+        "LoggerCounter",
+        "LoggerMetricsSensor");
   }
 
   public static class MockedSonarRuntime implements SonarRuntime {
 
     @Override
     public Version getApiVersion() {
-      return Version.create(9, 9);
+      // Aligné sur sonarjava 8.2.0 / SonarQube 10.7 LTS
+      return Version.create(10, 7);
     }
 
     @Override
@@ -62,5 +78,4 @@ class MyJavaPluginTest {
       return SonarEdition.COMMUNITY;
     }
   }
-
 }

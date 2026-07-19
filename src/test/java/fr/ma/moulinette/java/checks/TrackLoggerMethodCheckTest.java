@@ -2,7 +2,7 @@
  *      Ma-Moulinette
  *  -=track-logger-method=-
  *  -------------------------
- *  Copyright (c) 2015-2024.
+ *  Copyright (c) 2015-2026.
  *  Laurent HADJADJ <laurent_h@me.com>.
  *  Licensed Creative Common  CC-BY-NC-SA 4.0.
  *  ---
@@ -53,6 +53,15 @@ class TrackLoggerMethodCheckTest {
         CheckVerifier.newVerifier()
             .onFile("src/test/files/TrackDebugMethodCheck.java")
             .withCheck(new TrackDebugMethodCheck())
+            .verifyIssues();
+    }
+
+    @Test
+    @SuppressWarnings("pmd-unit-tests:JUnitTestsShouldIncludeAssert")
+    void testTraceMethod() {
+        CheckVerifier.newVerifier()
+            .onFile("src/test/files/TrackTraceMethodCheck.java")
+            .withCheck(new TrackTraceMethodCheck())
             .verifyIssues();
     }
 

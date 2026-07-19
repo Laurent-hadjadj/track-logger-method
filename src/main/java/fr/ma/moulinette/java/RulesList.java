@@ -2,7 +2,7 @@
  *      Ma-Moulinette
  *  -=track-logger-method=-
  *  -------------------------
- *  Copyright (c) 2015-2024.
+ *  Copyright (c) 2015-2026.
  *  Laurent HADJADJ <laurent_h@me.com>.
  *  Licensed Creative Common  CC-BY-NC-SA 4.0.
  *  ---
@@ -14,7 +14,6 @@ package fr.ma.moulinette.java;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.sonar.plugins.java.api.JavaCheck;
 import org.sonar.check.Rule;
@@ -22,20 +21,22 @@ import fr.ma.moulinette.java.checks.TrackInfoMethodCheck;
 import fr.ma.moulinette.java.checks.TrackWarnMethodCheck;
 import fr.ma.moulinette.java.checks.TrackErrorMethodCheck;
 import fr.ma.moulinette.java.checks.TrackDebugMethodCheck;
+import fr.ma.moulinette.java.checks.TrackTraceMethodCheck;
 
 /**
- * This class provides lists of Java checks (rules) to be used in the SonarQube plugin.
- * It includes methods to retrieve the checks and their keys for rule activation.
+ * Fournit les listes de checks Java (règles) utilisées par le plugin SonarQube.
+ * Source unique de vérité pour récupérer les checks et leurs clés en vue de l'activation
+ * des règles.
  */
 public final class RulesList {
 
-  // Private constructor to prevent instantiation
+  // Constructeur privé pour empêcher l'instanciation
   private RulesList() {}
 
   /**
-   * Retrieves all Java checks (both main and test).
+   * Récupère tous les checks Java (principaux et de test).
    *
-   * @return An unmodifiable list of all Java checks.
+   * @return une liste non modifiable de tous les checks Java.
    */
   public static List<Class<? extends JavaCheck>> getChecks() {
     List<Class<? extends JavaCheck>> checks = new ArrayList<>();
@@ -45,40 +46,41 @@ public final class RulesList {
   }
 
   /**
-   * Retrieves the list of main Java checks.
+   * Récupère la liste des checks Java principaux.
    *
-   * @return A list of main Java checks.
+   * @return une liste des checks Java principaux.
    */
   public static List<Class<? extends JavaCheck>> getJavaChecks() {
     List<Class<? extends JavaCheck>> checks = new ArrayList<>();
-    // Add each check class to the list
+    // Ajoute chaque classe de check à la liste
     checks.add(TrackInfoMethodCheck.class);
     checks.add(TrackErrorMethodCheck.class);
     checks.add(TrackWarnMethodCheck.class);
     checks.add(TrackDebugMethodCheck.class);
+    checks.add(TrackTraceMethodCheck.class);
     return checks;
   }
 
   /**
-   * Retrieves the list of Java test checks.
+   * Récupère la liste des checks Java de test.
    *
-   * @return An empty list of Java test checks (no test checks defined).
+   * @return une liste vide de checks Java de test (aucun défini).
    */
   public static List<Class<? extends JavaCheck>> getJavaTestChecks() {
-    // No test checks are defined
+    // Aucun check de test défini
     return Collections.emptyList();
   }
 
   /**
-   * Retrieves the keys of all checks.
-   * This is used to activate the rules in the SonarQube quality profile.
+   * Récupère les clés de tous les checks.
+   * Utilisé pour activer les règles dans le profil qualité SonarQube.
    *
-   * @return A list of rule keys.
+   * @return une liste non modifiable de clés de règles.
    */
   public static List<String> getCheckKeys() {
-    // Extract the key from the @Rule annotation
+    // Extrait la clé depuis l'annotation @Rule
     return getChecks().stream()
             .map(clazz -> clazz.getAnnotation(Rule.class).key())
-            .collect(Collectors.toList());
+            .toList();
   }
 }

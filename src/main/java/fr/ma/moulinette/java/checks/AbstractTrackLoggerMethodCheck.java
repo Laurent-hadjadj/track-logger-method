@@ -11,91 +11,185 @@
  */
 package fr.ma.moulinette.java.checks;
 
+import fr.ma.moulinette.java.LoggerCounter;
+
 import org.sonar.plugins.java.api.IssuableSubscriptionVisitor;
+import org.sonar.plugins.java.api.semantic.Type;
+import org.sonar.plugins.java.api.tree.AnnotationTree;
+import org.sonar.plugins.java.api.tree.ClassTree;
 import org.sonar.plugins.java.api.tree.ExpressionTree;
 import org.sonar.plugins.java.api.tree.MemberSelectExpressionTree;
 import org.sonar.plugins.java.api.tree.MethodInvocationTree;
 import org.sonar.plugins.java.api.tree.Tree;
 import org.sonar.plugins.java.api.tree.Tree.Kind;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
-
-import javax.annotation.Nonnull;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Abstract base class for tracking logger method invocations in Java code.
+ * Classe de base abstraite pour le suivi des appels aux méthodes de logger dans le code Java.
+ *
+ * Stratégie de détection, par ordre de priorité :
+ *  1. Résolution sémantique du type — utilise receiver.symbolType().fullyQualifiedName() pour
+ *     identifier précisément l'interface de logger. La méthode la plus fiable, elle fonctionne
+ *     quel que soit le nom de la variable.
+ *  2. Annotation Lombok — quand la classe englobante porte une annotation de logging Lombok
+ *     (@Slf4j, @Log4j2, ...), le framework détecté est affiné vers la variante Lombok.
+ *  3. Repli sur le nom de variable — si la résolution sémantique échoue, les noms conventionnels
+ *     (LOGGER, LOG, logger, log) sont utilisés pour tout de même signaler l'appel, classé en
+ *     LoggerFramework.UNKNOWN.
+ *
+ * Intégration avec le compteur : chaque appel détecté incrémente le registre statique
+ * LoggerCounter via LoggerCounter.increment(framework, level). Aucune injection d'instance
+ * n'est nécessaire car la map de compteurs est un champ statique, accessible depuis les checks
+ * que SonarQube instancie sans contrôle du constructeur.
  */
 public abstract class AbstractTrackLoggerMethodCheck extends IssuableSubscriptionVisitor {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(AbstractTrackLoggerMethodCheck.class);
+  private static final Logger LOG =
+      LoggerFactory.getLogger(AbstractTrackLoggerMethodCheck.class);
 
-  /**
-   * Returns the logger instance used by subclasses.
-   *
-   * @return The logger instance.
-   */
-  protected static Logger getLogger() {
-    return LOGGER;
-  }
+  /** Noms de variable de logger conventionnels utilisés en dernier recours. */
+  private static final List<String> CONVENTIONAL_LOGGER_NAMES =
+      List.of("LOGGER", "LOG", "logger", "log");
 
-  /**
-   * Subclasses must implement this method to specify the logger method name to track.
-   *
-   * @return The name of the logger method.
-   */
+  /** Noms simples des annotations Lombok qui génèrent un champ logger. */
+  private static final List<String> LOMBOK_LOGGER_ANNOTATIONS =
+      List.of("Slf4j", "Slf4jX", "Log4j", "Log4j2",
+              "CommonsLog", "JBossLog", "Log", "Flogger", "CustomLog");
+
+  // -------------------------------------------------------------------------
+  // Contrat abstrait
+  // -------------------------------------------------------------------------
+
+  /** @return le nom de la méthode de niveau de log à détecter (ex. "error"). */
   protected abstract String getMethodName();
 
-  /**
-   * Subclasses must implement this method to specify the logger message template.
-   *
-   * @return The logger message template.
-   */
+  /** @return le texte de base de l'issue SonarQube signalée à chaque correspondance. */
   protected abstract String getLoggerMessage();
 
-  /**
-   * Specifies the kind of syntax nodes to visit during analysis.
-   *
-   * @return A list containing only the METHOD_INVOCATION syntax kind.
-   */
+  // -------------------------------------------------------------------------
+  // Contrat IssuableSubscriptionVisitor
+  // -------------------------------------------------------------------------
+
   @Override
   public List<Kind> nodesToVisit() {
     return Collections.singletonList(Kind.METHOD_INVOCATION);
   }
 
-  /**
-   * Visits each METHOD_INVOCATION node in the syntax tree and checks if it matches the logger method to track.
-   *
-   * @param tree The METHOD_INVOCATION syntax tree node.
-   */
   @Override
   public void visitNode(@Nonnull Tree tree) {
     MethodInvocationTree methodInvocation = (MethodInvocationTree) tree;
-    if (isLoggerMethod(methodInvocation, getMethodName())) {
-      reportIssue(methodInvocation, getLoggerMessage());
-      LOGGER.info("-=J'ai trouvé un appel au logger=- ({}).", methodInvocation);
-    }
+
+    detectFramework(methodInvocation, getMethodName()).ifPresent(framework -> {
+      // Signale l'issue SonarQube avec le label du framework en suffixe
+      reportIssue(methodInvocation, buildIssueMessage(framework));
+
+      // Incrémente le compteur statique — aucune injection d'instance requise
+      LoggerCounter.increment(framework, getMethodName());
+
+      LOG.info("-=Logger détecté=- méthode={} framework={}",
+          getMethodName(), framework.getLabel());
+    });
   }
 
-  /**
-   * Checks if the given method invocation matches the logger method to track.
-   *
-   * @param methodInvocation The method invocation syntax tree node.
-   * @param methodName       The name of the logger method to track.
-   * @return true if the method invocation matches the logger method, false otherwise.
-   */
-  private static boolean isLoggerMethod(MethodInvocationTree methodInvocation, String methodName) {
+  // -------------------------------------------------------------------------
+  // Détection du framework
+  // -------------------------------------------------------------------------
+
+  private Optional<LoggerFramework> detectFramework(MethodInvocationTree methodInvocation,
+                                                    String methodName) {
     ExpressionTree expression = methodInvocation.methodSelect();
     if (!expression.is(Kind.MEMBER_SELECT)) {
-      return false;
+      return Optional.empty();
     }
+
     MemberSelectExpressionTree memberSelect = (MemberSelectExpressionTree) expression;
-    var identifier = memberSelect.identifier().name();
-    var expressionName = memberSelect.expression().toString();
-    /** On détecte les verbe LOGGER et LOG uniquement */
-    return ("LOGGER".equals(expressionName) || "LOG".equals(expressionName)) && methodName.equals(identifier);
+
+    if (!methodName.equals(memberSelect.identifier().name())) {
+      return Optional.empty();
+    }
+
+    ExpressionTree receiver = memberSelect.expression();
+
+    // 1. Résolution sémantique du type (la plus fiable)
+    LoggerFramework byType = resolveBySemanticType(receiver);
+    if (byType != LoggerFramework.UNKNOWN) {
+      String lombokAnnotation = findLombokAnnotation(methodInvocation);
+      return Optional.of(
+          LoggerFramework.fromTypeAndAnnotation(byType.getFullyQualifiedName(), lombokAnnotation));
+    }
+
+    // 2. Repli sur le nom de variable conventionnel
+    if (CONVENTIONAL_LOGGER_NAMES.contains(receiver.toString())) {
+      String lombokAnnotation = findLombokAnnotation(methodInvocation);
+      if (lombokAnnotation != null) {
+        return Optional.of(LoggerFramework.fromTypeAndAnnotation(null, lombokAnnotation));
+      }
+      return Optional.of(LoggerFramework.UNKNOWN);
+    }
+
+    return Optional.empty();
+  }
+
+  private static LoggerFramework resolveBySemanticType(ExpressionTree receiver) {
+    try {
+      Type type = receiver.symbolType();
+      if (type != null && !type.isUnknown()) {
+        return LoggerFramework.fromType(type.fullyQualifiedName());
+      }
+    } catch (Exception e) {
+      LOG.debug("Impossible de résoudre le type sémantique du receveur '{}' : {}",
+          receiver, e.getMessage());
+    }
+    return LoggerFramework.UNKNOWN;
+  }
+
+  @Nullable
+  private static String findLombokAnnotation(Tree node) {
+    ClassTree enclosingClass = findEnclosingClass(node);
+    if (enclosingClass == null) return null;
+
+    for (AnnotationTree annotation : enclosingClass.modifiers().annotations()) {
+      String simpleName = extractSimpleName(annotation.annotationType().toString());
+      if (LOMBOK_LOGGER_ANNOTATIONS.contains(simpleName)) {
+        return simpleName;
+      }
+    }
+    return null;
+  }
+
+  @Nullable
+  private static ClassTree findEnclosingClass(Tree node) {
+    Tree current = node.parent();
+    while (current != null) {
+      if (current.is(Kind.CLASS, Kind.ENUM, Kind.RECORD, Kind.INTERFACE)) {
+        return (ClassTree) current;
+      }
+      current = current.parent();
+    }
+    return null;
+  }
+
+  private static String extractSimpleName(String name) {
+    int lastDot = name.lastIndexOf('.');
+    return lastDot >= 0 ? name.substring(lastDot + 1) : name;
+  }
+
+  private String buildIssueMessage(LoggerFramework framework) {
+    if (framework == LoggerFramework.UNKNOWN) {
+      return getLoggerMessage();
+    }
+    return String.format("%s [%s]", getLoggerMessage(), framework.getLabel());
+  }
+
+  protected static Logger getLogger() {
+    return LOG;
   }
 }

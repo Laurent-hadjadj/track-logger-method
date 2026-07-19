@@ -1,0 +1,11 @@
+<p>Cette règle permet de traquer l'utilisation de la méthode TRACE du Logger.</p>
+<h2>Noncompliant Code Example</h2>
+<pre>
+  LOGGER.trace("Entering method computeTotal()");
+</pre>
+<h2>Compliant Solution</h2>
+<pre>
+    LOGGER.info("The board is full. You lost!");
+    // other invocation
+    log.info("The board is full. You lost!");
+</pre>
