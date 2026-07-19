@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+  <!--
+    Ce projet ne dépend que d'artefacts publics (Maven Central) : sonar-plugin-api,
+    sonar-java-plugin, sonar-analyzer-commons, slf4j, junit, assertj, mockito...
+    Il n'a donc pas besoin du mirroir/proxy Nexus interne déclaré dans le
+    settings.xml GLOBAL de l'installation Maven (<MAVEN_HOME>/conf/settings.xml).
+
+    Ce fichier remplace ces settings globaux (via .mvn/maven.config -> -gs) pour
+    toute commande `mvn` lancée depuis ce dépôt, sans modifier l'installation
+    Maven partagée ni la commenter/décommenter à la main à chaque build.
+  -->
+
+</settings>
