@@ -2,7 +2,7 @@
  *      Ma-Moulinette
  *  -=track-logger-method=-
  *  -------------------------
- *  Copyright (c) 2015-2024.
+ *  Copyright (c) 2015-2026.
  *  Laurent HADJADJ <laurent_h@me.com>.
  *  Licensed Creative Common  CC-BY-NC-SA 4.0.
  *  ---
@@ -15,16 +15,16 @@ import javax.annotation.Nonnull;
 import org.sonar.api.Plugin;
 
 /**
- * Entry point of your plugin containing your custom rules
+ * Point d'entrée historique du plugin contenant les règles custom.
  */
 public class MyJavaRulesPlugin implements Plugin {
 
   @Override
   public void define(@Nonnull Context context) {
-    // server extensions -> objects are instantiated during server startup
+    // Extensions serveur -> instanciées au démarrage du serveur
     context.addExtension(MyJavaRulesDefinition.class);
 
-    // batch extensions -> objects are instantiated during code analysis
+    // Extensions batch -> instanciées pendant l'analyse du code
     context.addExtension(MyJavaFileCheckRegistrar.class);
 
   }

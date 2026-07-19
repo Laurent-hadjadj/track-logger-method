@@ -15,7 +15,7 @@ import org.sonar.check.Rule;
 import org.sonar.check.Priority;
 
 /**
- * Custom SonarQube rule implementation to track usage of LOGGER.debug().
+ * Implémentation de règle SonarQube custom pour tracer l'utilisation de LOGGER.debug().
  */
 @Rule(
   key = "track-debug-method",
@@ -27,9 +27,9 @@ import org.sonar.check.Priority;
 public class TrackDebugMethodCheck extends AbstractTrackLoggerMethodCheck {
 
   /**
-   * Specifies the method name to track (debug in this case).
+   * Spécifie le nom de méthode à tracer (debug ici).
    *
-   * @return The method name "debug".
+   * @return le nom de méthode "debug".
    */
   @Override
   protected String getMethodName() {
@@ -37,9 +37,9 @@ public class TrackDebugMethodCheck extends AbstractTrackLoggerMethodCheck {
   }
 
   /**
-   * Specifies the logger message template for debug level.
+   * Spécifie le message de logger pour le niveau debug.
    *
-   * @return The logger message "Utilisation du Logger en mode : debug".
+   * @return le message "Utilisation du Logger en mode : debug".
    */
   @Override
   protected String getLoggerMessage() {

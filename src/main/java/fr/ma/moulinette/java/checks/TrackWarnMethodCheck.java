@@ -15,7 +15,7 @@ import org.sonar.check.Rule;
 import org.sonar.check.Priority;
 
 /**
- * Custom SonarQube rule implementation to track usage of LOGGER.warn().
+ * Implémentation de règle SonarQube custom pour tracer l'utilisation de LOGGER.warn().
  */
 @Rule(
   key = "track-warn-method",
@@ -27,9 +27,9 @@ import org.sonar.check.Priority;
 public class TrackWarnMethodCheck extends AbstractTrackLoggerMethodCheck {
 
   /**
-   * Specifies the method name to track (warn in this case).
+   * Spécifie le nom de méthode à tracer (warn ici).
    *
-   * @return The method name "warn".
+   * @return le nom de méthode "warn".
    */
   @Override
   protected String getMethodName() {
@@ -37,9 +37,9 @@ public class TrackWarnMethodCheck extends AbstractTrackLoggerMethodCheck {
   }
 
   /**
-   * Specifies the logger message template for warn level.
+   * Spécifie le message de logger pour le niveau warn.
    *
-   * @return The logger message "Utilisation du Logger en mode : warn".
+   * @return le message "Utilisation du Logger en mode : warn".
    */
   @Override
   protected String getLoggerMessage() {

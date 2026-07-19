@@ -15,7 +15,7 @@ import org.sonar.check.Rule;
 import org.sonar.check.Priority;
 
 /**
- * Custom SonarQube rule implementation to track usage of LOGGER.error().
+ * Implémentation de règle SonarQube custom pour tracer l'utilisation de LOGGER.error().
  */
 @Rule(
   key = "track-error-method",
@@ -27,9 +27,9 @@ import org.sonar.check.Priority;
 public class TrackErrorMethodCheck extends AbstractTrackLoggerMethodCheck {
 
   /**
-   * Specifies the method name to track (error in this case).
+   * Spécifie le nom de méthode à tracer (error ici).
    *
-   * @return The method name "error".
+   * @return le nom de méthode "error".
    */
   @Override
   protected String getMethodName() {
@@ -37,9 +37,9 @@ public class TrackErrorMethodCheck extends AbstractTrackLoggerMethodCheck {
   }
 
   /**
-   * Specifies the logger message template for error level.
+   * Spécifie le message de logger pour le niveau error.
    *
-   * @return The logger message "Utilisation du Logger en mode : error".
+   * @return le message "Utilisation du Logger en mode : error".
    */
   @Override
   protected String getLoggerMessage() {

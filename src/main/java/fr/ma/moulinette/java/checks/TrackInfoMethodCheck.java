@@ -15,7 +15,7 @@ import org.sonar.check.Rule;
 import org.sonar.check.Priority;
 
 /**
- * Custom SonarQube rule implementation to track usage of LOGGER.info().
+ * Implémentation de règle SonarQube custom pour tracer l'utilisation de LOGGER.info().
  */
 @Rule(
   key = "track-info-method",
@@ -27,9 +27,9 @@ import org.sonar.check.Priority;
 public class TrackInfoMethodCheck extends AbstractTrackLoggerMethodCheck {
 
   /**
-   * Specifies the method name to track (info in this case).
+   * Spécifie le nom de méthode à tracer (info ici).
    *
-   * @return The method name "info".
+   * @return le nom de méthode "info".
    */
   @Override
   protected String getMethodName() {
@@ -37,9 +37,9 @@ public class TrackInfoMethodCheck extends AbstractTrackLoggerMethodCheck {
   }
 
   /**
-   * Specifies the logger message template for info level.
+   * Spécifie le message de logger pour le niveau info.
    *
-   * @return The logger message "Utilisation du Logger en mode : info".
+   * @return le message "Utilisation du Logger en mode : info".
    */
   @Override
   protected String getLoggerMessage() {

@@ -11,7 +11,6 @@
  */
 
 /**
- * Package fr.ma.moulinette.java is the root package for MaMoulinette's Java code.
- * It contains all the Java classes and resources related to MaMoulinette's functionality.
+ * Contient les checks AST (règles de détection) du plugin track-logger-method.
  */
 package fr.ma.moulinette.java.checks;

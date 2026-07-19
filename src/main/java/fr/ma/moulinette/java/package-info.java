@@ -2,7 +2,7 @@
  *      Ma-Moulinette
  *  -=track-logger-method=-
  *  -------------------------
- *  Copyright (c) 2015-2024.
+ *  Copyright (c) 2015-2026.
  *  Laurent HADJADJ <laurent_h@me.com>.
  *  Licensed Creative Common  CC-BY-NC-SA 4.0.
  *  ---
@@ -11,7 +11,8 @@
  */
 
 /**
- * Package fr.ma.moulinette.java is the root package for MaMoulinette's Java code.
- * It contains all the Java classes and resources related to MaMoulinette's functionality.
+ * Package racine du plugin SonarQube track-logger-method (projet Ma-Moulinette).
+ * Contient le point d'entrée du plugin, les extensions SonarQube et la publication des
+ * métriques custom du domaine Logger.
  */
 package fr.ma.moulinette.java;

@@ -2,7 +2,7 @@
  *      Ma-Moulinette
  *  -=track-logger-method=-
  *  -------------------------
- *  Copyright (c) 2015-2024.
+ *  Copyright (c) 2015-2026.
  *  Laurent HADJADJ <laurent_h@me.com>.
  *  Licensed Creative Common  CC-BY-NC-SA 4.0.
  *  ---
@@ -16,26 +16,26 @@ import javax.annotation.Nonnull;
 import org.sonar.api.server.profile.BuiltInQualityProfilesDefinition;
 import org.sonar.plugins.java.Java;
 /**
- * This class defines a custom quality profile for the SonarQube plugin.
- * A quality profile is a set of rules that are activated for a specific language.
+ * Définit un profil qualité custom pour le plugin SonarQube.
+ * Un profil qualité est un ensemble de règles activées pour un langage donné.
  */
 public final class MyJavaQualityProfile implements BuiltInQualityProfilesDefinition {
 
-  // Name of the custom quality profile
+  // Nom du profil qualité custom
   static final String QUALITY_PROFILE_NAME = "Ma-Moulinette";
 
   /**
-   * Defines the custom quality profile by activating specific rules.
+   * Définit le profil qualité custom en activant les règles concernées.
    *
-   * @param context The context in which the profile is defined.
+   * @param context le contexte dans lequel le profil est défini.
    */
   @Override
   public void define(@Nonnull Context context) {
 
-    // Create a new built-in quality profile for Java language
+    // Crée un nouveau profil qualité intégré pour le langage Java
     NewBuiltInQualityProfile profile = context.createBuiltInQualityProfile(QUALITY_PROFILE_NAME, Java.KEY);
 
-    // Activate each rule defined in the RulesList for this quality profile
+    // Active chaque règle définie dans RulesList pour ce profil qualité
     RulesList.getCheckKeys().forEach(key -> profile.activateRule(MyJavaRulesDefinition.REPOSITORY_KEY, key));
 
     profile.done();

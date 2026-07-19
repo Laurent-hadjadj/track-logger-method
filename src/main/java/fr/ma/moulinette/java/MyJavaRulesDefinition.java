@@ -2,7 +2,7 @@
  *      Ma-Moulinette
  *  -=track-logger-method=-
  *  -------------------------
- *  Copyright (c) 2015-2024.
+ *  Copyright (c) 2015-2026.
  *  Laurent HADJADJ <laurent_h@me.com>.
  *  Licensed Creative Common  CC-BY-NC-SA 4.0.
  *  ---
@@ -23,58 +23,58 @@ import org.sonar.api.server.rule.RulesDefinition;
 import org.sonarsource.analyzer.commons.RuleMetadataLoader;
 
 /**
- * This class declares rule metadata in the server repository of rules for the Java plugin.
- * It allows the rules to be listed on the "Rules" page in SonarQube.
+ * Déclare les métadonnées de règles dans le repository serveur du plugin Java.
+ * Permet aux règles d'apparaître sur la page "Règles" de SonarQube.
  */
 public class MyJavaRulesDefinition implements RulesDefinition {
 
-  // Path to the rule metadata files
+  // Chemin vers les fichiers de métadonnées de règles
   private static final String RESOURCE_BASE_PATH = "org/sonar/l10n/java/rules/java";
 
-  // Repository key and name
+  // Clé et nom du repository
   public static final String REPOSITORY_KEY = "track-logger-method";
   public static final String REPOSITORY_NAME = "java";
 
-  // Set of rule keys that should be considered as template rules
+  // Ensemble des clés de règles à considérer comme règles de template
   private static final Set<String> RULE_TEMPLATES_KEY = Collections.emptySet();
 
-  // SonarQube runtime environment
+  // Environnement d'exécution SonarQube
   private final SonarRuntime runtime;
 
   /**
-   * Constructor that initializes the SonarQube runtime environment.
+   * Constructeur qui initialise l'environnement d'exécution SonarQube.
    *
-   * @param runtime The SonarQube runtime instance.
+   * @param runtime l'instance du runtime SonarQube.
    */
   public MyJavaRulesDefinition(SonarRuntime runtime) {
     this.runtime = runtime;
   }
 
   /**
-   * Method to define the rules repository and load rule metadata.
+   * Définit le repository de règles et charge les métadonnées des règles.
    *
-   * @param context The context in which the rules repository is defined.
+   * @param context le contexte dans lequel le repository de règles est défini.
    */
   @Override
   public void define(@Nonnull Context context) {
-    // Create a new repository for the rules with the specified key and name
+    // Crée un nouveau repository pour les règles avec la clé et le nom donnés
     var repository = context.createRepository(REPOSITORY_KEY, REPOSITORY_NAME).setName(REPOSITORY_NAME);
 
-    // Load rule metadata from annotated classes using RuleMetadataLoader
+    // Charge les métadonnées de règles depuis les classes annotées via RuleMetadataLoader
     var ruleMetadataLoader = new RuleMetadataLoader(RESOURCE_BASE_PATH, runtime);
     ruleMetadataLoader.addRulesByAnnotatedClass(repository, new ArrayList<>(RulesList.getChecks()));
 
-    // Set any rules marked as templates in the repository
+    // Marque comme templates les règles concernées dans le repository
     setTemplates(repository);
 
-    // Mark the repository as done, completing its definition
+    // Termine la définition du repository
     repository.done();
   }
 
   /**
-   * Method to set certain rules in the repository as templates.
+   * Marque certaines règles du repository comme templates.
    *
-   * @param repository The repository where rules are defined.
+   * @param repository le repository dans lequel les règles sont définies.
    */
   private static void setTemplates(NewRepository repository) {
     RULE_TEMPLATES_KEY.stream()

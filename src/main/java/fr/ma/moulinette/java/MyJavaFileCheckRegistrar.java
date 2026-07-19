@@ -2,7 +2,7 @@
  *      Ma-Moulinette
  *  -=track-logger-method=-
  *  -------------------------
- *  Copyright (c) 2015-2024.
+ *  Copyright (c) 2015-2026.
  *  Laurent HADJADJ <laurent_h@me.com>.
  *  Licensed Creative Common  CC-BY-NC-SA 4.0.
  *  ---
@@ -11,48 +11,42 @@
  */
 package fr.ma.moulinette.java;
 
-import java.util.List;
-
-import javax.annotation.Nonnull;
-
 import org.sonar.plugins.java.api.CheckRegistrar;
 import org.sonar.plugins.java.api.JavaCheck;
 import org.sonarsource.api.sonarlint.SonarLintSide;
 
+import javax.annotation.Nonnull;
+import java.util.List;
+
 /**
- * Provide the "checks" (implementations of rules) classes that are going be executed during
- * source code analysis.
+ * Enregistre les classes de check pour l'analyse, contre le repository de règles du plugin.
  *
- * This class is a batch extension by implementing the {@link org.sonar.plugins.java.api.CheckRegistrar} interface.
+ * Aucune injection de compteur n'est nécessaire ici car LoggerCounter expose une API statique
+ * (LoggerCounter.increment()) que les checks peuvent appeler directement sans référence à
+ * l'instance.
  */
 @SonarLintSide
 public class MyJavaFileCheckRegistrar implements CheckRegistrar {
 
   /**
-   * Register the classes that will be used to instantiate checks during analysis.
+   * Enregistre les classes de check contre la clé du repository.
    *
-   * @param registrarContext The context used to register the check classes.
+   * @param registrarContext le contexte d'enregistrement SonarQube
    */
   @Override
   public void register(@Nonnull RegistrarContext registrarContext) {
-    // Call to registerClassesForRepository to associate the classes with the correct repository key
-    registrarContext.registerClassesForRepository(MyJavaRulesDefinition.REPOSITORY_KEY, checkClasses(), testCheckClasses());
+    registrarContext.registerClassesForRepository(
+        MyJavaRulesDefinition.REPOSITORY_KEY,
+        checkClasses(),
+        testCheckClasses());
   }
 
-  /**
-   * Lists all the main checks provided by the plugin.
-   *
-   * @return A list of classes implementing JavaCheck.
-   */
+  /** Checks principaux fournis par le plugin. */
   public static List<Class<? extends JavaCheck>> checkClasses() {
     return RulesList.getJavaChecks();
   }
 
-  /**
-   * Lists all the test checks provided by the plugin.
-   *
-   * @return A list of classes implementing JavaCheck.
-   */
+  /** Checks de test fournis par le plugin (aucun défini). */
   public static List<Class<? extends JavaCheck>> testCheckClasses() {
     return RulesList.getJavaTestChecks();
   }
