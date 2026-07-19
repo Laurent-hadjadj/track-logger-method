@@ -32,7 +32,7 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
   check, pas de métadonnées de règle) ; les métriques `logger_*_trace_count` associées restaient
   donc toujours à 0.
 - **`.mvn/maven.config` + `.mvn/settings.xml`** : le build n'a plus besoin du mirroir Nexus
-  interne (`nexus.franceagrimer.fr`) pour se compiler — toutes les dépendances du projet sont
+  interne pour se compiler — toutes les dépendances du projet sont
   publiques (Maven Central). Ces fichiers surchargent automatiquement les *global settings* Maven
   (`-gs`) pour toute commande lancée depuis ce dépôt, sans modifier l'installation Maven partagée.
 - **`LoggerMetricsSensorTest`** : couvre la publication des ratios à grand-total nul et la
