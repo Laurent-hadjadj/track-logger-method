@@ -114,7 +114,7 @@ Dashboard SonarQube — domaine "Logger"
 | `LoggerMetricsSensor` | Sensor post-analyse qui lit `LoggerCounter` et publie les métriques, une seule fois par analyse |
 | `RulesList` | Source unique de vérité des checks enregistrés — alimente `MyJavaFileCheckRegistrar` et `MyJavaQualityProfile` |
 
-> [!WARNING] Attention
+> [!WARNING]
 >
 > `SensorContext.allIssues()` et `context.module()` ont été retirés de l'API SonarQube (9.x et > 10.x respectivement).
 > Ne pas réintroduire de code qui en dépend — l'accumulation passe exclusivement par `LoggerCounter`, et les mesures se sauvegardent sur `context.project()`.
@@ -149,7 +149,7 @@ un jar compilé contre la dernière LTS continue de s'installer sur des serveurs
    `lib/extensions/sonar-java-plugin-*.jar` sur un serveur réel de cette version — c'est la
    méthode la plus fiable, les numéros de version ne suivent pas la même numérotation que SonarQube.
 
-> [!CAUTION] Attention
+> [!CAUTION]
 >
 > Le plancher (`*.minVersion`) ne doit être relevé **que** si le code utilise volontairement une API absente des anciennes versions supportées — jamais automatiquement à chaque bump de  compilation.
 
@@ -207,7 +207,7 @@ Pour en ajouter une :
 
 ## 🩺 Dépannage
 
-> [!WARNING] Attention
+> [!WARNING]
 >
 > **`sonar-analyzer-commons-X.jar, track-logger-method-X.jar define 1 overlapping resource:
 > META-INF/MANIFEST.MF`** (warning `maven-shade-plugin`)
@@ -219,7 +219,7 @@ Pour en ajouter une :
 > dépendance — inoffensif mais bruyant, pas la peine de le laisser traîner dans les logs de build.
 
 _
-> [!WARNING] Attention
+> [!WARNING]
 >
 > **`Can not add the same measure twice on [key=...]`** au moment de l'analyse
 >
@@ -227,7 +227,7 @@ _
 > `LoggerCounter.markPublished()`). Si vous le revoyez, la cause la plus probable est un jar de plugin dupliqué dans `extensions/plugins/` du serveur SonarQube (ancienne version laissée à côté de la nouvelle) — voir le [guide utilisateur](USER_GUIDE.md#-déploiement).
 
 _
-> [!WARNING] Attention
+> [!WARNING]
 >
 > **`invalid flag: --release`** à la compilation
 >
@@ -237,7 +237,7 @@ _
 > `JAVA_HOME`.
 
 _
-> [!WARNING] Attention
+> [!WARNING]
 >
 > **Une règle nouvellement ajoutée (ex. `track-trace-method`) ne remonte jamais d'issue ni de compteur**, alors que le plugin se déploie et démarre sans erreur.
 >

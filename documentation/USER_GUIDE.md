@@ -59,27 +59,27 @@ Pour chaque appel `logger.error()`, `.warn()`, `.info()`, `.debug()` ou `.trace(
 
 ### Erreurs fréquentes au déploiement
 
-> [!WARNING] IMPORTANT
+> [!WARNING]
 >
 > **`Plugin Java Custom Rules [javacustom] is ignored`**
 >
- ```plaintext
+> ```plaintext
 > Plugin Java Custom Rules [javacustom] is ignored because the version 8.x.x of required plugin [java] is not installed
- ```
-
+> ```
+>
 > La version du plugin `sonar-java` installée sur votre serveur est plus ancienne que le plancher requis par ce jar.
 > Vérifiez la version du plugin Java dans **Administration →  Marketplace**, ou demandez au mainteneur du plugin de vérifier `sonarjava.minVersion` (voir [guide développeur](DEVELOPER_GUIDE.md#-stratégie-de-compatibilité-multi-versions)).
 
 _
-> [!WARNING] IMPORTANT
+> [!WARNING]
 >
 > **`Plugin key is missing from manifest`**
-
-```plaintext
-org.springframework.beans.factory.BeanCreationException: ...
-java.lang.NullPointerException: Plugin key is missing from manifest
-```
-
+>
+> ```plaintext
+> org.springframework.beans.factory.BeanCreationException: ...
+> java.lang.NullPointerException: Plugin key is missing from manifest
+> ```
+>
 > Le jar déployé n'a pas été construit avec `sonar-packaging-maven-plugin` (par exemple un jar récupéré depuis `target/classes` au lieu de `target/*-RELEASE.jar`).
 >
 > Redéployez le jar shadé produit par `mvn clean install`.
