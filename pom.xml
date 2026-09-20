@@ -250,6 +250,18 @@
           <destFile>target/jacoco.exec</destFile>
           <outputDirectory>target/jacoco-xml</outputDirectory>
           <outputEncoding>UTF-8</outputEncoding>
+          <rules>
+            <rule>
+                <element>PACKAGE</element>
+                <limits>
+                    <limit>
+                        <counter>LINE</counter>
+                        <value>COVEREDRATIO</value>
+                        <minimum>0.50</minimum>
+                    </limit>
+                </limits>
+            </rule>
+          </rules>
         </configuration>
       </plugin>
 

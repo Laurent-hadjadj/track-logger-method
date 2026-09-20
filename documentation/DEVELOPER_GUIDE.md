@@ -59,7 +59,7 @@ Le jar final se trouve dans `target/track-logger-method-2.0.0-RELEASE.jar`.
 mvn test
 ```
 
-Comme recommandé par SonarSource, lancez toujours les tests avant de compiler le jar final. Une exécution réussie se termine par `Tests run: N, Failures: 0, Errors: 0, Skipped: 0` suivi de `BUILD SUCCESS`.
+Comme recommandé par SonarSource, lancez toujours les tests avant de compiler le jar final. Une exécution réussie se termine par `Tests run: 14, Failures: 0, Errors: 0, Skipped: 0` suivi de `BUILD SUCCESS`.
 
 ## 🧑‍🔬 Recette (tests d'acceptation)
 
@@ -85,15 +85,15 @@ Fichier Java analysé
        │
        ▼
 AbstractTrackLoggerMethodCheck (AST)
-  ├── résolution sémantique  →  receiver.symbolType().fullyQualifiedName()
-  ├── annotation Lombok      →  @Slf4j, @Log4j2, …
-  └── fallback variable      →  LOGGER, LOG, logger, log
+  ├── résolution sémantique                  →  receiver.symbolType().fullyQualifiedName()
+  ├── annotation Lombok                      →  @Slf4j, @Log4j2, …
+  └── fallback variable                      →  LOGGER, LOG, logger, log
        │
        ▼
-LoggerCounter.increment(framework, level)   ← statique, thread-safe
+LoggerCounter.increment(framework, level)    ← statique, thread-safe
        │
        ▼
-LoggerMetricsSensor.execute()               ← idempotent (LoggerCounter.markPublished())
+LoggerMetricsSensor.execute()                ← idempotent (LoggerCounter.markPublished())
   ├── totaux par framework     logger_<framework>_count
   ├── compteurs par niveau     logger_<framework>_<level>_count
   ├── ratios                   logger_<framework>_ratio  (%)
@@ -143,11 +143,8 @@ un jar compilé contre la dernière LTS continue de s'installer sur des serveurs
 
 ### Règle en 2 étapes, à chaque campagne de test contre la dernière LTS de l'année
 
-1. **Version SonarQube cible → `sonar.plugin.api.version`** : consulter la matrice de
-   compatibilité SonarSource (tableau ci-dessous).
-2. **Version SonarQube cible → `sonarjava.version`** : inspecter directement
-   `lib/extensions/sonar-java-plugin-*.jar` sur un serveur réel de cette version — c'est la
-   méthode la plus fiable, les numéros de version ne suivent pas la même numérotation que SonarQube.
+1. **Version SonarQube cible → `sonar.plugin.api.version`** : consulter la matrice de compatibilité SonarSource (tableau ci-dessous).
+2. **Version SonarQube cible → `sonarjava.version`** : inspecter directement `lib/extensions/sonar-java-plugin-*.jar` sur un serveur réel de cette version — c'est la méthode la plus fiable, les numéros de version ne suivent pas la même numérotation que SonarQube.
 
 > [!CAUTION]
 >
@@ -175,8 +172,10 @@ un jar compilé contre la dernière LTS continue de s'installer sur des serveurs
 | 25.2.0.102705 | 11.1.0.2693 |
 | 25.1.0.102122 | 11.1.0.2693 |
 
-Source : <https://github.com/SonarSource/sonarqube/releases> et
-<https://github.com/SonarSource/sonar-plugin-api>.
+Sources :
+
+- <https://github.com/SonarSource/sonarqube/releases> et
+- <https://github.com/SonarSource/sonar-plugin-api>.
 
 ### Branche legacy 1.x (SonarQube 9.9 LTS)
 
