@@ -13,7 +13,7 @@
 ┃┃┃┃┃┃━━┃┃━━┃┗━┛┃\
 ┃┗┛┗┛┃━━┃┃━━┃┏━━┛\
 ┗┓┏┓┏┛━┏┫┣┓━┃┃\
-━┗┛┗┛━━┗━━┛━┗┛  NeXt 2.0.0 Release on September 2026 !
+━┗┛┗┛━━┗━━┛━┗┛  NeXt 2.0.0 Release on July 2026 !
 
 Plugin SonarQube qui identifie le framework de logging utilisé dans du code Java (`SLF4J`,`Lombok @Slf4j`, `Log4j2`, `Lombok @Log4j2`, `Log4j1`, `JUL`, `Logback`, `Commons Logging`,`JBoss Logging`) pour chaque appel `logger.error/warn/info/debug/trace()`, et publie des métriques par framework et par niveau dans le dashboard SonarQube.
 
