@@ -40,3 +40,6 @@ pom_SQ_9.xml
 dependency-reduced-pom.xml
 *.old
 **/settings.local.json
+
+### Projet
+backup
