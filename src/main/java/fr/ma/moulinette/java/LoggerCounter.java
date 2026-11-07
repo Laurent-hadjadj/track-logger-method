@@ -4,22 +4,21 @@
  *  -------------------------
  *  Copyright (c) 2015-2026.
  *  Laurent HADJADJ <laurent_h@me.com>.
- *  Licensed Creative Common  CC-BY-NC-SA 4.0.
- *  ---
- *  Vous pouvez obtenir une copie de la licence à l'adresse suivante :
- *  http://creativecommons.org/licenses/by-nc-sa/4.0/
+ *  SPDX-License-Identifier: LGPL-3.0-or-later
+ *  Voir le fichier LICENSE à la racine du dépôt.
  */
 package fr.ma.moulinette.java;
 
 import fr.ma.moulinette.java.checks.LoggerFramework;
 import org.sonar.api.scanner.ScannerSide;
 
-import java.util.EnumMap;
-import java.util.HashMap;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 /**
  * Compteur partagé et thread-safe qui accumule les statistiques d'appels logger pendant
@@ -49,7 +48,8 @@ public class LoggerCounter {
   protected static final String LEVEL_TRACE = "trace";
 
   /** Tous les niveaux de log suivis. */
-  protected static final String[] LEVELS = {LEVEL_ERROR, LEVEL_WARN, LEVEL_INFO, LEVEL_DEBUG, LEVEL_TRACE};
+  protected static final List<String> LEVELS =
+      List.of(LEVEL_ERROR, LEVEL_WARN, LEVEL_INFO, LEVEL_DEBUG, LEVEL_TRACE);
 
   // Registre statique — accessible par les checks sans injection de dépendance
   private static final Map<LoggerFramework, Map<String, AtomicInteger>> STATIC_COUNTS =
@@ -74,9 +74,13 @@ public class LoggerCounter {
    */
   public static void increment(LoggerFramework framework, String level) {
     Map<String, AtomicInteger> levelMap = STATIC_COUNTS.get(framework);
-    if (levelMap == null) return;
+    if (levelMap == null) {
+      return;
+    }
     AtomicInteger counter = levelMap.get(level);
-    if (counter == null) return;
+    if (counter == null) {
+      return;
+    }
     counter.incrementAndGet();
   }
 
@@ -119,10 +123,15 @@ public class LoggerCounter {
    * @return le nombre d'appels détectés, ou 0 si non suivi
    */
   public int getCount(LoggerFramework framework, String level) {
-    Map<String, AtomicInteger> levelMap = STATIC_COUNTS.get(framework);
-    if (levelMap == null) return 0;
+    var levelMap = STATIC_COUNTS.get(framework);
+    if (levelMap == null) {
+      return 0;
+    }
     AtomicInteger counter = levelMap.get(level);
-    return counter == null ? 0 : counter.get();
+    if (counter == null) {
+      return 0;
+    }
+    return counter.get();
   }
 
   /**
@@ -133,7 +142,9 @@ public class LoggerCounter {
    */
   public int getTotalForFramework(LoggerFramework framework) {
     Map<String, AtomicInteger> levelMap = STATIC_COUNTS.get(framework);
-    if (levelMap == null) return 0;
+    if (levelMap == null) {
+      return 0;
+    }
     return levelMap.values().stream().mapToInt(AtomicInteger::get).sum();
   }
 
@@ -143,7 +154,7 @@ public class LoggerCounter {
    * @return le nombre total d'appels logger détectés
    */
   public int getGrandTotal() {
-    int total = 0;
+    var total = 0;
     for (LoggerFramework framework : LoggerFramework.values()) {
       total += getTotalForFramework(framework);
     }
@@ -157,15 +168,10 @@ public class LoggerCounter {
    * @return une map framework vers (niveau vers compteur)
    */
   public Map<LoggerFramework, Map<String, Integer>> snapshot() {
-    Map<LoggerFramework, Map<String, Integer>> snap = new EnumMap<>(LoggerFramework.class);
-    for (Map.Entry<LoggerFramework, Map<String, AtomicInteger>> entry : STATIC_COUNTS.entrySet()) {
-      Map<String, Integer> levelSnap = new HashMap<>();
-      for (Map.Entry<String, AtomicInteger> levelEntry : entry.getValue().entrySet()) {
-        levelSnap.put(levelEntry.getKey(), levelEntry.getValue().get());
-      }
-      snap.put(entry.getKey(), levelSnap);
-    }
-    return snap;
+    return STATIC_COUNTS.entrySet().stream().collect(Collectors.toUnmodifiableMap(
+        Map.Entry::getKey,
+        entry -> entry.getValue().entrySet().stream().collect(Collectors.toUnmodifiableMap(
+            Map.Entry::getKey, levelEntry -> levelEntry.getValue().get()))));
   }
 
   // -------------------------------------------------------------------------
@@ -173,14 +179,14 @@ public class LoggerCounter {
   // -------------------------------------------------------------------------
 
   private static Map<LoggerFramework, Map<String, AtomicInteger>> buildCounterMap() {
-    Map<LoggerFramework, Map<String, AtomicInteger>> map = new EnumMap<>(LoggerFramework.class);
-    for (LoggerFramework framework : LoggerFramework.values()) {
-      Map<String, AtomicInteger> levelMap = new ConcurrentHashMap<>();
-      for (String level : LEVELS) {
-        levelMap.put(level, new AtomicInteger(0));
-      }
-      map.put(framework, levelMap);
-    }
-    return map;
+    return Arrays.stream(LoggerFramework.values())
+        .map(framework -> Map.entry(framework, newLevelMap()))
+        .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, Map.Entry::getValue));
+  }
+
+  private static Map<String, AtomicInteger> newLevelMap() {
+    Map<String, AtomicInteger> levelMap = new ConcurrentHashMap<>();
+    LEVELS.forEach(level -> levelMap.put(level, new AtomicInteger(0)));
+    return levelMap;
   }
 }

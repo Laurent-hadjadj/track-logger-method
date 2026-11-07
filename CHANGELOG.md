@@ -3,6 +3,27 @@
 Toutes les modifications notables de ce projet sont documentées dans ce fichier.
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/).
 
+## [2.1.0-RELEASE] - 2026-11-07
+
+### Modifié
+
+- **Licence** : le code passe de CC BY-NC-SA 4.0 à **GNU LGPL 3.0 ou ultérieure** (`LICENSE`, `LICENSES/GPL-3.0.txt`), licence à copyleft faible qui garantit que le plugin reste ouvert sans gêner son usage avec SonarQube. La documentation passe à **CC BY-SA 4.0** (`documentation/LICENSE.md`). Le texte de l'ancienne licence est conservé dans `LICENSES/CC-BY-NC-SA-4.0.txt` ; les versions publiées jusqu'à la 2.0.0-RELEASE restent disponibles sous CC BY-NC-SA 4.0. Motif et portée : `LICENSING.md`.
+- Ajout des fichiers `NOTICE` (éléments tiers : exemple SonarSource sous MIT No Attribution, `sonar-analyzer-commons` sous LGPL 3.0) et `LICENSING.md` (motif et portée du changement).
+- Les en-têtes des sources (`SPDX-License-Identifier: LGPL-3.0-or-later`) et le gabarit `src/main/resources/license-header.txt` (utilisé par `pom_SQ_8.xml`, auparavant MIT-0) reprennent la LGPL 3.0 ou ultérieure.
+- Suppression de `LICENSE.txt` (texte CC BY-NC-SA 4.0, conservé dans `LICENSES/CC-BY-NC-SA-4.0.txt`).
+
+### Corrigé
+
+- **Qualité du code (SonarQube 26.11)** : `LoggerMetricsSensor` remplace ses trois `switch` imbriqués par des tables immutables (complexité cyclomatique de 43 à moins de 10), `detectFramework` est ramené à 3 retours, les lignes de plus de 120 caractères de `LoggerMetrics` sont coupées, les accolades manquantes et les ternaires signalés sont corrigés, `LoggerCounter.LEVELS` n'expose plus de tableau modifiable. Comportement inchangé.
+
+### Ajouté
+
+- Test de non-régression `testInfoMethodLombokSlf4j` (classe `@Slf4j` avec plusieurs méthodes et deux appels dans l'une d'elles) : une issue par appel réel, à la ligne exacte de l'appel, toujours étiquetée `[Lombok @Slf4j]`.
+
+### Vérifié
+
+- Le double comptage `SLF4J` / `Lombok @Slf4j` signalé sur un projet n'est pas un défaut du plugin : les issues `[SLF4J]` étaient des issues fermées d'une analyse antérieure. Sur un projet de 13 classes `@Slf4j`, l'analyse avec la 2.1.0 remonte 45 issues pour 45 appels, avec la bonne ligne, le bon niveau et le label `[Lombok @Slf4j]`.
+
 ## [2.0.0-RELEASE] - 2026-07-19
 
 ### Ajouté en 2.0.0

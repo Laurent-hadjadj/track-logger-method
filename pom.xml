@@ -9,7 +9,7 @@
 
   <!-- Change this artifactId to your own organization artifactId -->
   <artifactId>track-logger-method</artifactId>
-  <version>2.0.0-RELEASE</version>
+  <version>2.1.0-RELEASE</version>
   <packaging>sonar-plugin</packaging>
 
   <!--  Change the name of the plugin here -->
@@ -23,8 +23,8 @@
   <!-- Licence -->
   <licenses>
     <license>
-      <name>CC-BY-NC-SA 4.0</name>
-      <url>https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.txt</url>
+      <name>GNU Lesser General Public License v3.0 or later</name>
+      <url>https://www.gnu.org/licenses/lgpl-3.0.txt</url>
       <distribution>repo</distribution>
     </license>
   </licenses>
@@ -69,6 +69,8 @@
     <!-- repos : https://mvnrepository.com/artifact/org.sonarsource.java/sonar-java-plugin/versions -->
     <!-- Version du plugin sonar-java : sonarqube-26.3.0.120487 -> sonar-java-plugin-8.24.0.42567.jar -->
     <!-- Version du plugin sonar-java : sonarqube-26.7.0.124771 -> sonar-java-plugin-8.34.0.44906.jar -->
+    <!-- Version du plugin sonar-java : sonarqube-26.11.0.134175 -> sonar-java-plugin-8.46.0.59609.jar -->
+    <!-- (classes Java 21 : non utilisable en dépendance, le projet reste en Java 17) -->
     <sonarjava.version>8.34.0.44906</sonarjava.version>
 
     <!-- ============================================================ -->
@@ -188,7 +190,8 @@
       </plugin>
 
       <plugin>
-        <!-- Repackages the project classes together with their dependencies into a single uber-jar, optionally renaming classes or removing unused classes. -->
+        <!-- Repackages the project classes together with their dependencies into a single -->
+        <!-- uber-jar, optionally renaming classes or removing unused classes. -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
         <version>3.6.0</version>
@@ -252,14 +255,14 @@
           <outputEncoding>UTF-8</outputEncoding>
           <rules>
             <rule>
-                <element>PACKAGE</element>
-                <limits>
-                    <limit>
-                        <counter>LINE</counter>
-                        <value>COVEREDRATIO</value>
-                        <minimum>0.50</minimum>
-                    </limit>
-                </limits>
+              <element>PACKAGE</element>
+              <limits>
+                <limit>
+                  <counter>LINE</counter>
+                  <value>COVEREDRATIO</value>
+                  <minimum>0.50</minimum>
+                </limit>
+              </limits>
             </rule>
           </rules>
         </configuration>

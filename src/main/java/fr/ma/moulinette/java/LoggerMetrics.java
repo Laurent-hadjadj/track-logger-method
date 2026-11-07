@@ -4,10 +4,8 @@
 *  -------------------------
 *  Copyright (c) 2015-2026.
 *  Laurent HADJADJ <laurent_h@me.com>.
-*  Licensed Creative Common  CC-BY-NC-SA 4.0.
-*  ---
-*  Vous pouvez obtenir une copie de la licence à l'adresse suivante :
-*  http://creativecommons.org/licenses/by-nc-sa/4.0/
+*  SPDX-License-Identifier: LGPL-3.0-or-later
+*  Voir le fichier LICENSE à la racine du dépôt.
 */
 package fr.ma.moulinette.java;
 
@@ -77,7 +75,7 @@ public class LoggerMetrics implements Metrics {
       "logger_slf4j_count", "SLF4J logger calls", Metric.ValueType.INT)
       .setDescription("Nombre total d'appels logger SLF4J (toutes méthodes confondues).")
       .setDirection(Metric.DIRECTION_NONE)
-      .setQualitative(false)
+      .setQualitative(Boolean.FALSE)
       .setDomain(DOMAIN)
       .create();
 
@@ -85,7 +83,7 @@ public class LoggerMetrics implements Metrics {
       "logger_lombok_slf4j_count", "Lombok @Slf4j logger calls", Metric.ValueType.INT)
       .setDescription("Nombre total d'appels logger générés par l'annotation Lombok @Slf4j.")
       .setDirection(Metric.DIRECTION_NONE)
-      .setQualitative(false)
+      .setQualitative(Boolean.FALSE)
       .setDomain(DOMAIN)
       .create();
 
@@ -93,7 +91,7 @@ public class LoggerMetrics implements Metrics {
       "logger_log4j2_count", "Log4j2 logger calls", Metric.ValueType.INT)
       .setDescription("Nombre total d'appels logger Log4j 2.x.")
       .setDirection(Metric.DIRECTION_NONE)
-      .setQualitative(false)
+      .setQualitative(Boolean.FALSE)
       .setDomain(DOMAIN)
       .create();
 
@@ -101,7 +99,7 @@ public class LoggerMetrics implements Metrics {
       "logger_lombok_log4j2_count", "Lombok @Log4j2 logger calls", Metric.ValueType.INT)
       .setDescription("Nombre total d'appels logger générés par l'annotation Lombok @Log4j2.")
       .setDirection(Metric.DIRECTION_NONE)
-      .setQualitative(false)
+      .setQualitative(Boolean.FALSE)
       .setDomain(DOMAIN)
       .create();
 
@@ -109,7 +107,7 @@ public class LoggerMetrics implements Metrics {
       "logger_log4j1_count", "Log4j1 logger calls", Metric.ValueType.INT)
       .setDescription("Nombre total d'appels logger Log4j 1.x (legacy).")
       .setDirection(Metric.DIRECTION_NONE)
-      .setQualitative(false)
+      .setQualitative(Boolean.FALSE)
       .setDomain(DOMAIN)
       .create();
 
@@ -117,7 +115,7 @@ public class LoggerMetrics implements Metrics {
       "logger_jul_count", "JUL logger calls", Metric.ValueType.INT)
       .setDescription("Nombre total d'appels java.util.logging.")
       .setDirection(Metric.DIRECTION_NONE)
-      .setQualitative(false)
+      .setQualitative(Boolean.FALSE)
       .setDomain(DOMAIN)
       .create();
 
@@ -125,7 +123,7 @@ public class LoggerMetrics implements Metrics {
       "logger_logback_count", "Logback logger calls", Metric.ValueType.INT)
       .setDescription("Nombre total d'appels Logback direct (sans façade SLF4J).")
       .setDirection(Metric.DIRECTION_NONE)
-      .setQualitative(false)
+      .setQualitative(Boolean.FALSE)
       .setDomain(DOMAIN)
       .create();
 
@@ -133,7 +131,7 @@ public class LoggerMetrics implements Metrics {
       "logger_commons_logging_count", "Commons Logging logger calls", Metric.ValueType.INT)
       .setDescription("Nombre total d'appels Apache Commons Logging.")
       .setDirection(Metric.DIRECTION_NONE)
-      .setQualitative(false)
+      .setQualitative(Boolean.FALSE)
       .setDomain(DOMAIN)
       .create();
 
@@ -141,7 +139,7 @@ public class LoggerMetrics implements Metrics {
       "logger_jboss_count", "JBoss Logging logger calls", Metric.ValueType.INT)
       .setDescription("Nombre total d'appels JBoss Logging.")
       .setDirection(Metric.DIRECTION_NONE)
-      .setQualitative(false)
+      .setQualitative(Boolean.FALSE)
       .setDomain(DOMAIN)
       .create();
 
@@ -149,7 +147,7 @@ public class LoggerMetrics implements Metrics {
       "logger_unknown_count", "Unknown framework logger calls", Metric.ValueType.INT)
       .setDescription("Nombre total d'appels logger dont le framework n'a pas pu être identifié.")
       .setDirection(Metric.DIRECTION_NONE)
-      .setQualitative(false)
+      .setQualitative(Boolean.FALSE)
       .setDomain(DOMAIN)
       .create();
 
@@ -160,53 +158,86 @@ public class LoggerMetrics implements Metrics {
   // =========================================================================
 
   // --- SLF4J ---
-  public static final Metric<Integer> LOGGER_SLF4J_ERROR_COUNT = levelMetric(ID_SLF4J, LoggerCounter.LEVEL_ERROR, LABEL_SLF4J);
-  public static final Metric<Integer> LOGGER_SLF4J_WARN_COUNT  = levelMetric(ID_SLF4J, LoggerCounter.LEVEL_WARN, LABEL_SLF4J);
-  public static final Metric<Integer> LOGGER_SLF4J_INFO_COUNT  = levelMetric(ID_SLF4J, LoggerCounter.LEVEL_INFO, LABEL_SLF4J);
-  public static final Metric<Integer> LOGGER_SLF4J_DEBUG_COUNT = levelMetric(ID_SLF4J, LoggerCounter.LEVEL_DEBUG, LABEL_SLF4J);
-  public static final Metric<Integer> LOGGER_SLF4J_TRACE_COUNT = levelMetric(ID_SLF4J, LoggerCounter.LEVEL_TRACE, LABEL_SLF4J);
+  public static final Metric<Integer> LOGGER_SLF4J_ERROR_COUNT =
+      levelMetric(ID_SLF4J, LoggerCounter.LEVEL_ERROR, LABEL_SLF4J);
+  public static final Metric<Integer> LOGGER_SLF4J_WARN_COUNT =
+      levelMetric(ID_SLF4J, LoggerCounter.LEVEL_WARN, LABEL_SLF4J);
+  public static final Metric<Integer> LOGGER_SLF4J_INFO_COUNT =
+      levelMetric(ID_SLF4J, LoggerCounter.LEVEL_INFO, LABEL_SLF4J);
+  public static final Metric<Integer> LOGGER_SLF4J_DEBUG_COUNT =
+      levelMetric(ID_SLF4J, LoggerCounter.LEVEL_DEBUG, LABEL_SLF4J);
+  public static final Metric<Integer> LOGGER_SLF4J_TRACE_COUNT =
+      levelMetric(ID_SLF4J, LoggerCounter.LEVEL_TRACE, LABEL_SLF4J);
 
   // --- Lombok @Slf4j ---
-  public static final Metric<Integer> LOGGER_LOMBOK_SLF4J_ERROR_COUNT = levelMetric(ID_LOMBOK_SLF4J, LoggerCounter.LEVEL_ERROR, LABEL_LOMBOK_SLF4J);
-  public static final Metric<Integer> LOGGER_LOMBOK_SLF4J_WARN_COUNT  = levelMetric(ID_LOMBOK_SLF4J, LoggerCounter.LEVEL_WARN, LABEL_LOMBOK_SLF4J);
-  public static final Metric<Integer> LOGGER_LOMBOK_SLF4J_INFO_COUNT  = levelMetric(ID_LOMBOK_SLF4J, LoggerCounter.LEVEL_INFO, LABEL_LOMBOK_SLF4J);
-  public static final Metric<Integer> LOGGER_LOMBOK_SLF4J_DEBUG_COUNT = levelMetric(ID_LOMBOK_SLF4J, LoggerCounter.LEVEL_DEBUG, LABEL_LOMBOK_SLF4J);
-  public static final Metric<Integer> LOGGER_LOMBOK_SLF4J_TRACE_COUNT = levelMetric(ID_LOMBOK_SLF4J, LoggerCounter.LEVEL_TRACE, LABEL_LOMBOK_SLF4J);
+  public static final Metric<Integer> LOGGER_LOMBOK_SLF4J_ERROR_COUNT =
+      levelMetric(ID_LOMBOK_SLF4J, LoggerCounter.LEVEL_ERROR, LABEL_LOMBOK_SLF4J);
+  public static final Metric<Integer> LOGGER_LOMBOK_SLF4J_WARN_COUNT =
+      levelMetric(ID_LOMBOK_SLF4J, LoggerCounter.LEVEL_WARN, LABEL_LOMBOK_SLF4J);
+  public static final Metric<Integer> LOGGER_LOMBOK_SLF4J_INFO_COUNT =
+      levelMetric(ID_LOMBOK_SLF4J, LoggerCounter.LEVEL_INFO, LABEL_LOMBOK_SLF4J);
+  public static final Metric<Integer> LOGGER_LOMBOK_SLF4J_DEBUG_COUNT =
+      levelMetric(ID_LOMBOK_SLF4J, LoggerCounter.LEVEL_DEBUG, LABEL_LOMBOK_SLF4J);
+  public static final Metric<Integer> LOGGER_LOMBOK_SLF4J_TRACE_COUNT =
+      levelMetric(ID_LOMBOK_SLF4J, LoggerCounter.LEVEL_TRACE, LABEL_LOMBOK_SLF4J);
 
   // --- Log4j2 ---
-  public static final Metric<Integer> LOGGER_LOG4J2_ERROR_COUNT = levelMetric(ID_LOG4J2, LoggerCounter.LEVEL_ERROR, LABEL_LOG4J2);
-  public static final Metric<Integer> LOGGER_LOG4J2_WARN_COUNT  = levelMetric(ID_LOG4J2, LoggerCounter.LEVEL_WARN, LABEL_LOG4J2);
-  public static final Metric<Integer> LOGGER_LOG4J2_INFO_COUNT  = levelMetric(ID_LOG4J2, LoggerCounter.LEVEL_INFO, LABEL_LOG4J2);
-  public static final Metric<Integer> LOGGER_LOG4J2_DEBUG_COUNT = levelMetric(ID_LOG4J2, LoggerCounter.LEVEL_DEBUG, LABEL_LOG4J2);
-  public static final Metric<Integer> LOGGER_LOG4J2_TRACE_COUNT = levelMetric(ID_LOG4J2, LoggerCounter.LEVEL_TRACE, LABEL_LOG4J2);
+  public static final Metric<Integer> LOGGER_LOG4J2_ERROR_COUNT =
+      levelMetric(ID_LOG4J2, LoggerCounter.LEVEL_ERROR, LABEL_LOG4J2);
+  public static final Metric<Integer> LOGGER_LOG4J2_WARN_COUNT =
+      levelMetric(ID_LOG4J2, LoggerCounter.LEVEL_WARN, LABEL_LOG4J2);
+  public static final Metric<Integer> LOGGER_LOG4J2_INFO_COUNT =
+      levelMetric(ID_LOG4J2, LoggerCounter.LEVEL_INFO, LABEL_LOG4J2);
+  public static final Metric<Integer> LOGGER_LOG4J2_DEBUG_COUNT =
+      levelMetric(ID_LOG4J2, LoggerCounter.LEVEL_DEBUG, LABEL_LOG4J2);
+  public static final Metric<Integer> LOGGER_LOG4J2_TRACE_COUNT =
+      levelMetric(ID_LOG4J2, LoggerCounter.LEVEL_TRACE, LABEL_LOG4J2);
 
   // --- Lombok @Log4j2 ---
-  public static final Metric<Integer> LOGGER_LOMBOK_LOG4J2_ERROR_COUNT = levelMetric(ID_LOMBOK_LOG4J2, LoggerCounter.LEVEL_ERROR, LABEL_LOMBOK_LOG4J2);
-  public static final Metric<Integer> LOGGER_LOMBOK_LOG4J2_WARN_COUNT  = levelMetric(ID_LOMBOK_LOG4J2, LoggerCounter.LEVEL_WARN, LABEL_LOMBOK_LOG4J2);
-  public static final Metric<Integer> LOGGER_LOMBOK_LOG4J2_INFO_COUNT  = levelMetric(ID_LOMBOK_LOG4J2, LoggerCounter.LEVEL_INFO, LABEL_LOMBOK_LOG4J2);
-  public static final Metric<Integer> LOGGER_LOMBOK_LOG4J2_DEBUG_COUNT = levelMetric(ID_LOMBOK_LOG4J2, LoggerCounter.LEVEL_DEBUG, LABEL_LOMBOK_LOG4J2);
-  public static final Metric<Integer> LOGGER_LOMBOK_LOG4J2_TRACE_COUNT = levelMetric(ID_LOMBOK_LOG4J2, LoggerCounter.LEVEL_TRACE, LABEL_LOMBOK_LOG4J2);
+  public static final Metric<Integer> LOGGER_LOMBOK_LOG4J2_ERROR_COUNT =
+      levelMetric(ID_LOMBOK_LOG4J2, LoggerCounter.LEVEL_ERROR, LABEL_LOMBOK_LOG4J2);
+  public static final Metric<Integer> LOGGER_LOMBOK_LOG4J2_WARN_COUNT =
+      levelMetric(ID_LOMBOK_LOG4J2, LoggerCounter.LEVEL_WARN, LABEL_LOMBOK_LOG4J2);
+  public static final Metric<Integer> LOGGER_LOMBOK_LOG4J2_INFO_COUNT =
+      levelMetric(ID_LOMBOK_LOG4J2, LoggerCounter.LEVEL_INFO, LABEL_LOMBOK_LOG4J2);
+  public static final Metric<Integer> LOGGER_LOMBOK_LOG4J2_DEBUG_COUNT =
+      levelMetric(ID_LOMBOK_LOG4J2, LoggerCounter.LEVEL_DEBUG, LABEL_LOMBOK_LOG4J2);
+  public static final Metric<Integer> LOGGER_LOMBOK_LOG4J2_TRACE_COUNT =
+      levelMetric(ID_LOMBOK_LOG4J2, LoggerCounter.LEVEL_TRACE, LABEL_LOMBOK_LOG4J2);
 
   // --- Log4j1 ---
-  public static final Metric<Integer> LOGGER_LOG4J1_ERROR_COUNT = levelMetric(ID_LOG4J1, LoggerCounter.LEVEL_ERROR, LABEL_LOG4J1);
-  public static final Metric<Integer> LOGGER_LOG4J1_WARN_COUNT  = levelMetric(ID_LOG4J1, LoggerCounter.LEVEL_WARN, LABEL_LOG4J1);
-  public static final Metric<Integer> LOGGER_LOG4J1_INFO_COUNT  = levelMetric(ID_LOG4J1, LoggerCounter.LEVEL_INFO, LABEL_LOG4J1);
-  public static final Metric<Integer> LOGGER_LOG4J1_DEBUG_COUNT = levelMetric(ID_LOG4J1, LoggerCounter.LEVEL_DEBUG, LABEL_LOG4J1);
-  public static final Metric<Integer> LOGGER_LOG4J1_TRACE_COUNT = levelMetric(ID_LOG4J1, LoggerCounter.LEVEL_TRACE, LABEL_LOG4J1);
+  public static final Metric<Integer> LOGGER_LOG4J1_ERROR_COUNT =
+      levelMetric(ID_LOG4J1, LoggerCounter.LEVEL_ERROR, LABEL_LOG4J1);
+  public static final Metric<Integer> LOGGER_LOG4J1_WARN_COUNT =
+      levelMetric(ID_LOG4J1, LoggerCounter.LEVEL_WARN, LABEL_LOG4J1);
+  public static final Metric<Integer> LOGGER_LOG4J1_INFO_COUNT =
+      levelMetric(ID_LOG4J1, LoggerCounter.LEVEL_INFO, LABEL_LOG4J1);
+  public static final Metric<Integer> LOGGER_LOG4J1_DEBUG_COUNT =
+      levelMetric(ID_LOG4J1, LoggerCounter.LEVEL_DEBUG, LABEL_LOG4J1);
+  public static final Metric<Integer> LOGGER_LOG4J1_TRACE_COUNT =
+      levelMetric(ID_LOG4J1, LoggerCounter.LEVEL_TRACE, LABEL_LOG4J1);
 
   // --- JUL ---
-  public static final Metric<Integer> LOGGER_JUL_ERROR_COUNT = levelMetric(ID_JUL, LoggerCounter.LEVEL_ERROR, LABEL_JUL);
+  public static final Metric<Integer> LOGGER_JUL_ERROR_COUNT =
+      levelMetric(ID_JUL, LoggerCounter.LEVEL_ERROR, LABEL_JUL);
   public static final Metric<Integer> LOGGER_JUL_WARN_COUNT  = levelMetric(ID_JUL, LoggerCounter.LEVEL_WARN, LABEL_JUL);
   public static final Metric<Integer> LOGGER_JUL_INFO_COUNT  = levelMetric(ID_JUL, LoggerCounter.LEVEL_INFO, LABEL_JUL);
-  public static final Metric<Integer> LOGGER_JUL_DEBUG_COUNT = levelMetric(ID_JUL, LoggerCounter.LEVEL_DEBUG, LABEL_JUL);
-  public static final Metric<Integer> LOGGER_JUL_TRACE_COUNT = levelMetric(ID_JUL, LoggerCounter.LEVEL_TRACE, LABEL_JUL);
+  public static final Metric<Integer> LOGGER_JUL_DEBUG_COUNT =
+      levelMetric(ID_JUL, LoggerCounter.LEVEL_DEBUG, LABEL_JUL);
+  public static final Metric<Integer> LOGGER_JUL_TRACE_COUNT =
+      levelMetric(ID_JUL, LoggerCounter.LEVEL_TRACE, LABEL_JUL);
 
   // --- Unknown ---
-  public static final Metric<Integer> LOGGER_UNKNOWN_ERROR_COUNT = levelMetric(ID_UNKNOWN, LoggerCounter.LEVEL_ERROR, LABEL_UNKNOWN);
-  public static final Metric<Integer> LOGGER_UNKNOWN_WARN_COUNT  = levelMetric(ID_UNKNOWN, LoggerCounter.LEVEL_WARN, LABEL_UNKNOWN);
-  public static final Metric<Integer> LOGGER_UNKNOWN_INFO_COUNT  = levelMetric(ID_UNKNOWN, LoggerCounter.LEVEL_INFO, LABEL_UNKNOWN);
-  public static final Metric<Integer> LOGGER_UNKNOWN_DEBUG_COUNT = levelMetric(ID_UNKNOWN, LoggerCounter.LEVEL_DEBUG, LABEL_UNKNOWN);
-  public static final Metric<Integer> LOGGER_UNKNOWN_TRACE_COUNT = levelMetric(ID_UNKNOWN, LoggerCounter.LEVEL_TRACE, LABEL_UNKNOWN);
+  public static final Metric<Integer> LOGGER_UNKNOWN_ERROR_COUNT =
+      levelMetric(ID_UNKNOWN, LoggerCounter.LEVEL_ERROR, LABEL_UNKNOWN);
+  public static final Metric<Integer> LOGGER_UNKNOWN_WARN_COUNT =
+      levelMetric(ID_UNKNOWN, LoggerCounter.LEVEL_WARN, LABEL_UNKNOWN);
+  public static final Metric<Integer> LOGGER_UNKNOWN_INFO_COUNT =
+      levelMetric(ID_UNKNOWN, LoggerCounter.LEVEL_INFO, LABEL_UNKNOWN);
+  public static final Metric<Integer> LOGGER_UNKNOWN_DEBUG_COUNT =
+      levelMetric(ID_UNKNOWN, LoggerCounter.LEVEL_DEBUG, LABEL_UNKNOWN);
+  public static final Metric<Integer> LOGGER_UNKNOWN_TRACE_COUNT =
+      levelMetric(ID_UNKNOWN, LoggerCounter.LEVEL_TRACE, LABEL_UNKNOWN);
 
   // =========================================================================
   // 3. Ratio par framework (% du total des appels logger, 0.0 à 100.0)
@@ -219,7 +250,8 @@ public class LoggerMetrics implements Metrics {
   public static final Metric<Double> LOGGER_LOG4J1_RATIO = ratioMetric(ID_LOG4J1, LABEL_LOG4J1);
   public static final Metric<Double> LOGGER_JUL_RATIO = ratioMetric(ID_JUL, LABEL_JUL);
   public static final Metric<Double> LOGGER_LOGBACK_RATIO = ratioMetric(ID_LOGBACK, LABEL_LOGBACK);
-  public static final Metric<Double> LOGGER_COMMONS_LOGGING_RATIO = ratioMetric(ID_COMMONS_LOGGING, LABEL_COMMONS_LOGGING);
+  public static final Metric<Double> LOGGER_COMMONS_LOGGING_RATIO =
+      ratioMetric(ID_COMMONS_LOGGING, LABEL_COMMONS_LOGGING);
   public static final Metric<Double> LOGGER_JBOSS_RATIO = ratioMetric(ID_JBOSS, LABEL_JBOSS);
   public static final Metric<Double> LOGGER_UNKNOWN_RATIO = ratioMetric(ID_UNKNOWN, LABEL_UNKNOWN);
 
@@ -231,7 +263,7 @@ public class LoggerMetrics implements Metrics {
       "logger_total_count", "Total logger calls", Metric.ValueType.INT)
       .setDescription("Nombre total de tous les appels logger (tous frameworks et niveaux confondus).")
       .setDirection(Metric.DIRECTION_NONE)
-      .setQualitative(false)
+      .setQualitative(Boolean.FALSE)
       .setDomain(DOMAIN)
       .create();
 
@@ -301,7 +333,7 @@ public class LoggerMetrics implements Metrics {
     return new Metric.Builder(key, name, Metric.ValueType.INT)
         .setDescription(desc)
         .setDirection(Metric.DIRECTION_NONE)
-        .setQualitative(false)
+        .setQualitative(Boolean.FALSE)
         .setDomain(DOMAIN)
         .create();
   }
@@ -314,7 +346,7 @@ public class LoggerMetrics implements Metrics {
     return new Metric.Builder(key, name, Metric.ValueType.FLOAT)
         .setDescription(desc)
         .setDirection(Metric.DIRECTION_NONE)
-        .setQualitative(false)
+        .setQualitative(Boolean.FALSE)
         .setDomain(DOMAIN)
         .create();
   }

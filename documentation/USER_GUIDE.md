@@ -39,7 +39,7 @@ Pour chaque appel `logger.error()`, `.warn()`, `.info()`, `.debug()` ou `.trace(
 
 ## 📦 Déploiement
 
-1. Récupérer `track-logger-method-2.0.0-RELEASE.jar` (voir le [guide développeur](DEVELOPER_GUIDE.md#-compilation) pour le compiler vous-même).
+1. Récupérer `track-logger-method-2.1.0-RELEASE.jar` (voir le [guide développeur](DEVELOPER_GUIDE.md#-compilation) pour le compiler vous-même).
 2. Copier le jar dans `extensions/plugins/` de votre serveur SonarQube.
 3. Redémarrer le serveur.
 4. Vérifier dans les logs que le plugin démarre correctement :

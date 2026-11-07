@@ -39,7 +39,7 @@ Une compilation réussie affiche notamment le manifeste généré par
 [INFO] Plugin definition in update center
 [INFO]     Key: trackloggermethod
 [INFO]     Name: Track Logger Method
-[INFO]     Version: 2.0.0-RELEASE
+[INFO]     Version: 2.1.0-RELEASE
 [INFO]     Entry-point Class: fr.ma.moulinette.java.MyJavaPlugin
 [INFO]     Required Plugins: java:8.2.0.36672
 [INFO]     Minimal Sonar Plugin API Version: 10.7.0.96327
@@ -51,7 +51,7 @@ Une compilation réussie affiche notamment le manifeste généré par
 > [!TIP]
 > `Required Plugins` et `Minimal Sonar Plugin API Version` reflètent le **plancher** (`sonarjava.minVersion` / `sonar.plugin.api.minVersion`), pas la version de compilation — voir [Stratégie de compatibilité multi-versions](#-stratégie-de-compatibilité-multi-versions).
 
-Le jar final se trouve dans `target/track-logger-method-2.0.0-RELEASE.jar`.
+Le jar final se trouve dans `target/track-logger-method-2.1.0-RELEASE.jar`.
 
 ## 🧪 Tests
 
@@ -139,7 +139,7 @@ un jar compilé contre la dernière LTS continue de s'installer sur des serveurs
 >
 > C'est ce qui obligeait à publier un jar différent par version SonarQube.
 >
-> Avec le découplage, un seul jar `2.0.0` couvre SonarQube 10.7, 24.x, 25.x et 26.x.
+> Avec le découplage, un seul jar `2.1.0` couvre SonarQube 10.7, 24.x, 25.x et 26.x.
 
 ### Règle en 2 étapes, à chaque campagne de test contre la dernière LTS de l'année
 

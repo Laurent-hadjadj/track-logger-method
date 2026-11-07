@@ -4,10 +4,8 @@
  *  -------------------------
  *  Copyright (c) 2015-2026.
  *  Laurent HADJADJ <laurent_h@me.com>.
- *  Licensed Creative Common  CC-BY-NC-SA 4.0.
- *  ---
- *  Vous pouvez obtenir une copie de la licence à l'adresse suivante :
- *  http://creativecommons.org/licenses/by-nc-sa/4.0/
+ *  SPDX-License-Identifier: LGPL-3.0-or-later
+ *  Voir le fichier LICENSE à la racine du dépôt.
  */
 
 package fr.ma.moulinette.java;
@@ -33,10 +31,10 @@ class MyJavaRulesDefinitionTest {
   private static final String RULE_DEBUG = "track-debug-method";
   private static final String RULE_TRACE = "track-trace-method";
 
-  @Test
   /** On test que le repository name n'est pass null avant de tester l'égalité */
+  @Test
   @SuppressWarnings("findbugs:NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-  void test() {
+  void testRulesDefinition() {
     MyJavaRulesDefinition rulesDefinition = new MyJavaRulesDefinition(new MyJavaPluginTest.MockedSonarRuntime());
 
     RulesDefinition.Context context = new RulesDefinition.Context();

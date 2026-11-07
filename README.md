@@ -1,19 +1,19 @@
 # 🪵 Track Logger Method
 
-[![Version](https://img.shields.io/badge/version-2.0.0-blue)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-2.1.0-blue)](CHANGELOG.md)
 [![JAVA](https://img.shields.io/badge/JAVA-%E2%89%A5%2017-777BB4?logo=java&logoColor=white)](https://www.java.com/)
 [![SonarQube](https://img.shields.io/badge/26.7.0.124771-000000?logo=sonar&logoColor=white)](https://www.sonarsource.com/products/sonarqube/downloads/)
 [![JAVA-PLUGIN](https://img.shields.io/badge/8.34.0.44906-000000?logo=sonar&logoColor=white)](https://www.sonarsource.com/products/sonarqube/downloads/)
 [![Tests](https://img.shields.io/badge/tests-14%20passed-success?logo=junit&logoColor=white)](https://junit.org/)
 [![Coverage](https://img.shields.io/badge/coverage-96.00%25-brightgreen)](https://www.jacoco.org/jacoco/)
-[![Licence](https://img.shields.io/badge/licence-CC%20BY--NC--SA%204.0-lightgrey)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+[![Licence](https://img.shields.io/badge/licence-LGPL%203.0-blue)](LICENSE)
 
 ┏┓┏┓┏┓━┏━━┓━┏━━━┓\
 ┃┃┃┃┃┃━┗┫┣┛━┃┏━┓┃\
 ┃┃┃┃┃┃━━┃┃━━┃┗━┛┃\
 ┃┗┛┗┛┃━━┃┃━━┃┏━━┛\
 ┗┓┏┓┏┛━┏┫┣┓━┃┃\
-━┗┛┗┛━━┗━━┛━┗┛  NeXt 2.0.0 Release on July 2026 !
+━┗┛┗┛━━┗━━┛━┗┛  NeXt 2.1.0 Release on November 2026 !
 
 Plugin SonarQube qui identifie le framework de logging utilisé dans du code Java (`SLF4J`,`Lombok @Slf4j`, `Log4j2`, `Lombok @Log4j2`, `Log4j1`, `JUL`, `Logback`, `Commons Logging`,`JBoss Logging`) pour chaque appel `logger.error/warn/info/debug/trace()`, et publie des métriques par framework et par niveau dans le dashboard SonarQube.
 
@@ -33,7 +33,7 @@ Développé dans le cadre du projet **Ma-Moulinette**.
 mvn clean install
 ```
 
-Copier `target/track-logger-method-2.0.0-RELEASE.jar` dans `extensions/plugins/` de votre serveur SonarQube, puis redémarrer. Détails complets : [guide utilisateur](documentation/USER_GUIDE.md#-déploiement).
+Copier `target/track-logger-method-2.1.0-RELEASE.jar` dans `extensions/plugins/` de votre serveur SonarQube, puis redémarrer. Détails complets : [guide utilisateur](documentation/USER_GUIDE.md#-déploiement).
 
 > [!NOTE]
 > Le build ne nécessite **aucun accès à un miroir Nexus** — toutes les dépendances sont publiques (Maven Central).
@@ -43,7 +43,8 @@ Copier `target/track-logger-method-2.0.0-RELEASE.jar` dans `extensions/plugins/`
 
 | Version plugin | SonarQube | Java | Statut |
 | --- | --- | --- | --- |
-| 2.0.0-RELEASE | 10.7+ LTS (10.x, 24.x, 25.x, 26.x) | 17 | ✅ Actuel |
+| 2.1.0-RELEASE | 10.7+ LTS (10.x, 24.x, 25.x, 26.x) | 17 | ✅ Actuel |
+| 2.0.0-RELEASE | 10.7+ LTS (10.x, 24.x, 25.x, 26.x) | 17 | ⚠️ Précédent (CC BY-NC-SA 4.0) |
 | 1.0.0-RELEASE | 9.9 LTS | 11 | ⚠️ Legacy |
 
 > [!WARNING]
@@ -51,12 +52,13 @@ Copier `target/track-logger-method-2.0.0-RELEASE.jar` dans `extensions/plugins/`
 
 ## 📜 Licence
 
-Ce projet est basé sur le projet **Custom Rules** pour SonarJava de SonarSource :
-<https://github.com/SonarSource/sonar-java/blob/master/docs/CUSTOM_RULES_101.md>
+- **Code** : [GNU LGPL 3.0 ou ultérieure](LICENSE) (`LGPL-3.0-or-later`), licence à copyleft : le logiciel reste ouvert.
+- **Documentation** (`README.md`, `documentation/`) : [CC BY-SA 4.0](documentation/LICENSE.md).
 
-La licence [GNU LGPL 3.0](https://www.gnu.org/licenses/lgpl.txt) de ce dépôt ne s'applique pas
-au dossier `java-custom-rules-example` : son contenu est sous licence
-[MIT No Attribution](LICENSE.txt).
+**Changement de licence.** Depuis le 4 novembre 2026, le code est distribué sous LGPL 3.0. Jusqu'à la version 2.0.0-RELEASE incluse, il était publié sous CC BY-NC-SA 4.0 ([texte conservé](LICENSES/CC-BY-NC-SA-4.0.txt)) ; ces versions restent sous cette licence. L'usage commercial est désormais autorisé, à condition de respecter le copyleft. Les en-têtes des sources ont été mis à jour en 2.1.0. **Motif et portée du changement : [LICENSING.md](LICENSING.md)**. Attributions : [NOTICE](NOTICE).
+
+**Origine.** Ce projet est basé sur le projet **Custom Rules** pour SonarJava de SonarSource :
+<https://github.com/SonarSource/sonar-java/blob/master/docs/CUSTOM_RULES_101.md>. L'exemple fourni par SonarSource (`java-custom-rules-example`) est sous licence MIT No Attribution, qui n'impose aucune obligation d'attribution. Le jar embarque `sonar-analyzer-commons` (LGPL 3.0).
 
 ## 💬 Notes personnelles
 

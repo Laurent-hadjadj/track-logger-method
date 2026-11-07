@@ -4,10 +4,8 @@
  *  -------------------------
  *  Copyright (c) 2015-2026.
  *  Laurent HADJADJ <laurent_h@me.com>.
- *  Licensed Creative Common  CC-BY-NC-SA 4.0.
- *  ---
- *  Vous pouvez obtenir une copie de la licence à l'adresse suivante :
- *  http://creativecommons.org/licenses/by-nc-sa/4.0/
+ *  SPDX-License-Identifier: LGPL-3.0-or-later
+ *  Voir le fichier LICENSE à la racine du dépôt.
  */
 
 package fr.ma.moulinette.java.checks;
@@ -20,8 +18,10 @@ import org.sonar.java.checks.verifier.CheckVerifier;
  */
 class TrackLoggerMethodCheckTest {
 
+    private static final String NO_ASSERT = "pmd-unit-tests:JUnitTestsShouldIncludeAssert";
+
     @Test
-    @SuppressWarnings("pmd-unit-tests:JUnitTestsShouldIncludeAssert")
+    @SuppressWarnings(NO_ASSERT)
     void testInfoMethod() {
         CheckVerifier.newVerifier()
             .onFile("src/test/files/TrackInfoMethodCheck.java")
@@ -30,7 +30,16 @@ class TrackLoggerMethodCheckTest {
     }
 
     @Test
-    @SuppressWarnings("pmd-unit-tests:JUnitTestsShouldIncludeAssert")
+    @SuppressWarnings(NO_ASSERT)
+    void testInfoMethodLombokSlf4j() {
+        CheckVerifier.newVerifier()
+            .onFile("src/test/files/TrackInfoLombokSlf4jCheck.java")
+            .withCheck(new TrackInfoMethodCheck())
+            .verifyIssues();
+    }
+
+    @Test
+    @SuppressWarnings(NO_ASSERT)
     void testErrorMethod() {
         CheckVerifier.newVerifier()
             .onFile("src/test/files/TrackErrorMethodCheck.java")
@@ -39,7 +48,7 @@ class TrackLoggerMethodCheckTest {
     }
 
     @Test
-    @SuppressWarnings("pmd-unit-tests:JUnitTestsShouldIncludeAssert")
+    @SuppressWarnings(NO_ASSERT)
     void testWarnMethod() {
         CheckVerifier.newVerifier()
             .onFile("src/test/files/TrackWarnMethodCheck.java")
@@ -48,7 +57,7 @@ class TrackLoggerMethodCheckTest {
     }
 
     @Test
-    @SuppressWarnings("pmd-unit-tests:JUnitTestsShouldIncludeAssert")
+    @SuppressWarnings(NO_ASSERT)
     void testDebugMethod() {
         CheckVerifier.newVerifier()
             .onFile("src/test/files/TrackDebugMethodCheck.java")
@@ -57,7 +66,7 @@ class TrackLoggerMethodCheckTest {
     }
 
     @Test
-    @SuppressWarnings("pmd-unit-tests:JUnitTestsShouldIncludeAssert")
+    @SuppressWarnings(NO_ASSERT)
     void testTraceMethod() {
         CheckVerifier.newVerifier()
             .onFile("src/test/files/TrackTraceMethodCheck.java")
@@ -66,7 +75,7 @@ class TrackLoggerMethodCheckTest {
     }
 
     @Test
-    @SuppressWarnings("pmd-unit-tests:JUnitTestsShouldIncludeAssert")
+    @SuppressWarnings(NO_ASSERT)
     void testNoLoggerMethods() {
         CheckVerifier.newVerifier()
             .onFile("src/test/files/NoLoggerUsage.java")

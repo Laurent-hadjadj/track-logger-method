@@ -4,10 +4,8 @@
  *  -------------------------
  *  Copyright (c) 2015-2026.
  *  Laurent HADJADJ <laurent_h@me.com>.
- *  Licensed Creative Common  CC-BY-NC-SA 4.0.
- *  ---
- *  Vous pouvez obtenir une copie de la licence à l'adresse suivante :
- *  http://creativecommons.org/licenses/by-nc-sa/4.0/
+ *  SPDX-License-Identifier: LGPL-3.0-or-later
+ *  Voir le fichier LICENSE à la racine du dépôt.
  */
 package fr.ma.moulinette.java;
 
@@ -34,7 +32,6 @@ import static org.mockito.Mockito.when;
  */
 class LoggerMetricsSensorTest {
 
-  private LoggerCounter loggerCounter;
   private LoggerMetricsSensor sensor;
   private SensorContext context;
   @SuppressWarnings("rawtypes")
@@ -44,7 +41,7 @@ class LoggerMetricsSensorTest {
   @BeforeEach
   void setUp() {
     LoggerCounter.reset();
-    loggerCounter = new LoggerCounter();
+    LoggerCounter loggerCounter = new LoggerCounter();
     sensor = new LoggerMetricsSensor(loggerCounter);
 
     context = mock(SensorContext.class);
@@ -64,7 +61,7 @@ class LoggerMetricsSensorTest {
   }
 
   @Test
-  void publishesRatioForEveryFrameworkEvenWhenGrandTotalIsZero() {
+  void testPublishesRatioForEveryFrameworkEvenWhenGrandTotalIsZero() {
     sensor.execute(context);
 
     // Avant le fix, publishRatios() retournait immédiatement si grandTotal == 0 :
@@ -76,7 +73,7 @@ class LoggerMetricsSensorTest {
   }
 
   @Test
-  void secondExecutionDoesNotRepublishMetrics() {
+  void testSecondExecutionDoesNotRepublishMetrics() {
     sensor.execute(context);
     MockingDetails detailsAfterFirst = mockingDetails(newMeasure);
     int invocationsAfterFirst = detailsAfterFirst.getInvocations().size();

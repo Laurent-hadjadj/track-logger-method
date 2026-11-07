@@ -2,12 +2,10 @@
  *      Ma-Moulinette
  *  -=track-logger-method=-
  *  -------------------------
- *  Copyright (c) 2015-2024.
+ *  Copyright (c) 2015-2026.
  *  Laurent HADJADJ <laurent_h@me.com>.
- *  Licensed Creative Common  CC-BY-NC-SA 4.0.
- *  ---
- *  Vous pouvez obtenir une copie de la licence à l'adresse suivante :
- *  http://creativecommons.org/licenses/by-nc-sa/4.0/
+ *  SPDX-License-Identifier: LGPL-3.0-or-later
+ *  Voir le fichier LICENSE à la racine du dépôt.
  */
 package fr.ma.moulinette.java;
 
@@ -17,6 +15,8 @@ import org.sonar.api.batch.sensor.Sensor;
 import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.batch.sensor.SensorDescriptor;
 import org.sonar.api.measures.Metric;
+
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,6 +42,65 @@ import org.slf4j.LoggerFactory;
 public class LoggerMetricsSensor implements Sensor {
 
   private static final Logger LOG = LoggerFactory.getLogger(LoggerMetricsSensor.class);
+
+  private static final Map<LoggerFramework, Metric<Integer>> TOTAL_METRICS = Map.ofEntries(
+      Map.entry(LoggerFramework.SLF4J, LoggerMetrics.LOGGER_SLF4J_COUNT),
+      Map.entry(LoggerFramework.LOMBOK_SLF4J, LoggerMetrics.LOGGER_LOMBOK_SLF4J_COUNT),
+      Map.entry(LoggerFramework.LOG4J2, LoggerMetrics.LOGGER_LOG4J2_COUNT),
+      Map.entry(LoggerFramework.LOMBOK_LOG4J2, LoggerMetrics.LOGGER_LOMBOK_LOG4J2_COUNT),
+      Map.entry(LoggerFramework.LOG4J1, LoggerMetrics.LOGGER_LOG4J1_COUNT),
+      Map.entry(LoggerFramework.JUL, LoggerMetrics.LOGGER_JUL_COUNT),
+      Map.entry(LoggerFramework.LOGBACK, LoggerMetrics.LOGGER_LOGBACK_COUNT),
+      Map.entry(LoggerFramework.COMMONS_LOGGING, LoggerMetrics.LOGGER_COMMONS_LOGGING_COUNT),
+      Map.entry(LoggerFramework.JBOSS, LoggerMetrics.LOGGER_JBOSS_COUNT),
+      Map.entry(LoggerFramework.UNKNOWN, LoggerMetrics.LOGGER_UNKNOWN_COUNT));
+  private static final Map<LoggerFramework, Metric<Double>> RATIO_METRICS = Map.ofEntries(
+      Map.entry(LoggerFramework.SLF4J, LoggerMetrics.LOGGER_SLF4J_RATIO),
+      Map.entry(LoggerFramework.LOMBOK_SLF4J, LoggerMetrics.LOGGER_LOMBOK_SLF4J_RATIO),
+      Map.entry(LoggerFramework.LOG4J2, LoggerMetrics.LOGGER_LOG4J2_RATIO),
+      Map.entry(LoggerFramework.LOMBOK_LOG4J2, LoggerMetrics.LOGGER_LOMBOK_LOG4J2_RATIO),
+      Map.entry(LoggerFramework.LOG4J1, LoggerMetrics.LOGGER_LOG4J1_RATIO),
+      Map.entry(LoggerFramework.JUL, LoggerMetrics.LOGGER_JUL_RATIO),
+      Map.entry(LoggerFramework.LOGBACK, LoggerMetrics.LOGGER_LOGBACK_RATIO),
+      Map.entry(LoggerFramework.COMMONS_LOGGING, LoggerMetrics.LOGGER_COMMONS_LOGGING_RATIO),
+      Map.entry(LoggerFramework.JBOSS, LoggerMetrics.LOGGER_JBOSS_RATIO),
+      Map.entry(LoggerFramework.UNKNOWN, LoggerMetrics.LOGGER_UNKNOWN_RATIO));
+  // Ordre des niveaux : error, warn, info, debug, trace. LOGBACK, COMMONS_LOGGING et JBOSS n'ont
+  // pas de métrique par niveau.
+  private static final Map<LoggerFramework, Map<String, Metric<Integer>>> LEVEL_METRICS =
+      Map.ofEntries(
+      Map.entry(LoggerFramework.SLF4J, levels(
+          LoggerMetrics.LOGGER_SLF4J_ERROR_COUNT, LoggerMetrics.LOGGER_SLF4J_WARN_COUNT,
+          LoggerMetrics.LOGGER_SLF4J_INFO_COUNT, LoggerMetrics.LOGGER_SLF4J_DEBUG_COUNT,
+          LoggerMetrics.LOGGER_SLF4J_TRACE_COUNT)),
+      Map.entry(LoggerFramework.LOMBOK_SLF4J, levels(
+          LoggerMetrics.LOGGER_LOMBOK_SLF4J_ERROR_COUNT, LoggerMetrics.LOGGER_LOMBOK_SLF4J_WARN_COUNT,
+          LoggerMetrics.LOGGER_LOMBOK_SLF4J_INFO_COUNT, LoggerMetrics.LOGGER_LOMBOK_SLF4J_DEBUG_COUNT,
+          LoggerMetrics.LOGGER_LOMBOK_SLF4J_TRACE_COUNT)),
+      Map.entry(LoggerFramework.LOG4J2, levels(
+          LoggerMetrics.LOGGER_LOG4J2_ERROR_COUNT, LoggerMetrics.LOGGER_LOG4J2_WARN_COUNT,
+          LoggerMetrics.LOGGER_LOG4J2_INFO_COUNT, LoggerMetrics.LOGGER_LOG4J2_DEBUG_COUNT,
+          LoggerMetrics.LOGGER_LOG4J2_TRACE_COUNT)),
+      Map.entry(LoggerFramework.LOMBOK_LOG4J2, levels(
+          LoggerMetrics.LOGGER_LOMBOK_LOG4J2_ERROR_COUNT, LoggerMetrics.LOGGER_LOMBOK_LOG4J2_WARN_COUNT,
+          LoggerMetrics.LOGGER_LOMBOK_LOG4J2_INFO_COUNT, LoggerMetrics.LOGGER_LOMBOK_LOG4J2_DEBUG_COUNT,
+          LoggerMetrics.LOGGER_LOMBOK_LOG4J2_TRACE_COUNT)),
+      Map.entry(LoggerFramework.LOG4J1, levels(
+          LoggerMetrics.LOGGER_LOG4J1_ERROR_COUNT, LoggerMetrics.LOGGER_LOG4J1_WARN_COUNT,
+          LoggerMetrics.LOGGER_LOG4J1_INFO_COUNT, LoggerMetrics.LOGGER_LOG4J1_DEBUG_COUNT,
+          LoggerMetrics.LOGGER_LOG4J1_TRACE_COUNT)),
+      Map.entry(LoggerFramework.JUL, levels(
+          LoggerMetrics.LOGGER_JUL_ERROR_COUNT, LoggerMetrics.LOGGER_JUL_WARN_COUNT,
+          LoggerMetrics.LOGGER_JUL_INFO_COUNT, LoggerMetrics.LOGGER_JUL_DEBUG_COUNT,
+          LoggerMetrics.LOGGER_JUL_TRACE_COUNT)),
+      Map.entry(LoggerFramework.UNKNOWN, levels(
+          LoggerMetrics.LOGGER_UNKNOWN_ERROR_COUNT, LoggerMetrics.LOGGER_UNKNOWN_WARN_COUNT,
+          LoggerMetrics.LOGGER_UNKNOWN_INFO_COUNT, LoggerMetrics.LOGGER_UNKNOWN_DEBUG_COUNT,
+          LoggerMetrics.LOGGER_UNKNOWN_TRACE_COUNT)));
+
+  /** Pourcentage avec une décimale : arrondi de (x * 1000 / total) puis division par 10. */
+  private static final double PERCENT_SCALE = 1000.0;
+  private static final double PERCENT_DIVISOR = 10.0;
 
   private final LoggerCounter loggerCounter;
 
@@ -95,7 +154,9 @@ public class LoggerMetricsSensor implements Sensor {
     for (LoggerFramework framework : LoggerFramework.values()) {
       int total = loggerCounter.getTotalForFramework(framework);
       Metric<Integer> metric = totalMetricFor(framework);
-      if (metric != null) saveIntMetric(context, metric, total);
+      if (metric != null) {
+        saveIntMetric(context, metric, total);
+      }
     }
   }
 
@@ -104,7 +165,9 @@ public class LoggerMetricsSensor implements Sensor {
       for (String level : LoggerCounter.LEVELS) {
         int count = loggerCounter.getCount(framework, level);
         Metric<Integer> metric = levelMetricFor(framework, level);
-        if (metric != null) saveIntMetric(context, metric, count);
+        if (metric != null) {
+          saveIntMetric(context, metric, count);
+        }
       }
     }
   }
@@ -112,110 +175,55 @@ public class LoggerMetricsSensor implements Sensor {
   private void publishRatios(SensorContext context, int grandTotal) {
     for (LoggerFramework framework : LoggerFramework.values()) {
       int total = loggerCounter.getTotalForFramework(framework);
-      double ratio = grandTotal == 0 ? 0.0 : Math.round(total * 1000.0 / grandTotal) / 10.0;
+      double ratio = computeRatio(total, grandTotal);
       Metric<Double> metric = ratioMetricFor(framework);
-      if (metric != null) saveDoubleMetric(context, metric, ratio);
+      if (metric != null) {
+        saveDoubleMetric(context, metric, ratio);
+      }
     }
   }
 
-  private void publishGrandTotal(SensorContext context, int grandTotal) {
+  private static double computeRatio(int total, int grandTotal) {
+    if (grandTotal == 0) {
+      return 0.0;
+    }
+    double scaled = total * PERCENT_SCALE;
+    return Math.round(scaled / grandTotal) / PERCENT_DIVISOR;
+  }
+
+  private static void publishGrandTotal(SensorContext context, int grandTotal) {
     saveIntMetric(context, LoggerMetrics.LOGGER_TOTAL_COUNT, grandTotal);
   }
 
   // -------------------------------------------------------------------------
-  // Résolution framework → Metric
+  // Résolution framework → Metric (tables statiques)
   // -------------------------------------------------------------------------
 
+  private static Map<String, Metric<Integer>> levels(Metric<Integer> error, Metric<Integer> warn,
+                                                     Metric<Integer> info, Metric<Integer> debug,
+                                                     Metric<Integer> trace) {
+    return Map.of(
+        LoggerCounter.LEVEL_ERROR, error,
+        LoggerCounter.LEVEL_WARN, warn,
+        LoggerCounter.LEVEL_INFO, info,
+        LoggerCounter.LEVEL_DEBUG, debug,
+        LoggerCounter.LEVEL_TRACE, trace);
+  }
+
   private static Metric<Integer> totalMetricFor(LoggerFramework framework) {
-    return switch (framework) {
-      case SLF4J           -> LoggerMetrics.LOGGER_SLF4J_COUNT;
-      case LOMBOK_SLF4J    -> LoggerMetrics.LOGGER_LOMBOK_SLF4J_COUNT;
-      case LOG4J2          -> LoggerMetrics.LOGGER_LOG4J2_COUNT;
-      case LOMBOK_LOG4J2   -> LoggerMetrics.LOGGER_LOMBOK_LOG4J2_COUNT;
-      case LOG4J1          -> LoggerMetrics.LOGGER_LOG4J1_COUNT;
-      case JUL             -> LoggerMetrics.LOGGER_JUL_COUNT;
-      case LOGBACK         -> LoggerMetrics.LOGGER_LOGBACK_COUNT;
-      case COMMONS_LOGGING -> LoggerMetrics.LOGGER_COMMONS_LOGGING_COUNT;
-      case JBOSS           -> LoggerMetrics.LOGGER_JBOSS_COUNT;
-      case UNKNOWN         -> LoggerMetrics.LOGGER_UNKNOWN_COUNT;
-    };
+    return TOTAL_METRICS.get(framework);
   }
 
   private static Metric<Integer> levelMetricFor(LoggerFramework framework, String level) {
-    return switch (framework) {
-      case SLF4J -> switch (level) {
-        case LoggerCounter.LEVEL_ERROR -> LoggerMetrics.LOGGER_SLF4J_ERROR_COUNT;
-        case LoggerCounter.LEVEL_WARN  -> LoggerMetrics.LOGGER_SLF4J_WARN_COUNT;
-        case LoggerCounter.LEVEL_INFO  -> LoggerMetrics.LOGGER_SLF4J_INFO_COUNT;
-        case LoggerCounter.LEVEL_DEBUG -> LoggerMetrics.LOGGER_SLF4J_DEBUG_COUNT;
-        case LoggerCounter.LEVEL_TRACE -> LoggerMetrics.LOGGER_SLF4J_TRACE_COUNT;
-        default -> null;
-      };
-      case LOMBOK_SLF4J -> switch (level) {
-        case LoggerCounter.LEVEL_ERROR -> LoggerMetrics.LOGGER_LOMBOK_SLF4J_ERROR_COUNT;
-        case LoggerCounter.LEVEL_WARN  -> LoggerMetrics.LOGGER_LOMBOK_SLF4J_WARN_COUNT;
-        case LoggerCounter.LEVEL_INFO  -> LoggerMetrics.LOGGER_LOMBOK_SLF4J_INFO_COUNT;
-        case LoggerCounter.LEVEL_DEBUG -> LoggerMetrics.LOGGER_LOMBOK_SLF4J_DEBUG_COUNT;
-        case LoggerCounter.LEVEL_TRACE -> LoggerMetrics.LOGGER_LOMBOK_SLF4J_TRACE_COUNT;
-        default -> null;
-      };
-      case LOG4J2 -> switch (level) {
-        case LoggerCounter.LEVEL_ERROR -> LoggerMetrics.LOGGER_LOG4J2_ERROR_COUNT;
-        case LoggerCounter.LEVEL_WARN  -> LoggerMetrics.LOGGER_LOG4J2_WARN_COUNT;
-        case LoggerCounter.LEVEL_INFO  -> LoggerMetrics.LOGGER_LOG4J2_INFO_COUNT;
-        case LoggerCounter.LEVEL_DEBUG -> LoggerMetrics.LOGGER_LOG4J2_DEBUG_COUNT;
-        case LoggerCounter.LEVEL_TRACE -> LoggerMetrics.LOGGER_LOG4J2_TRACE_COUNT;
-        default -> null;
-      };
-      case LOMBOK_LOG4J2 -> switch (level) {
-        case LoggerCounter.LEVEL_ERROR -> LoggerMetrics.LOGGER_LOMBOK_LOG4J2_ERROR_COUNT;
-        case LoggerCounter.LEVEL_WARN  -> LoggerMetrics.LOGGER_LOMBOK_LOG4J2_WARN_COUNT;
-        case LoggerCounter.LEVEL_INFO  -> LoggerMetrics.LOGGER_LOMBOK_LOG4J2_INFO_COUNT;
-        case LoggerCounter.LEVEL_DEBUG -> LoggerMetrics.LOGGER_LOMBOK_LOG4J2_DEBUG_COUNT;
-        case LoggerCounter.LEVEL_TRACE -> LoggerMetrics.LOGGER_LOMBOK_LOG4J2_TRACE_COUNT;
-        default -> null;
-      };
-      case LOG4J1 -> switch (level) {
-        case LoggerCounter.LEVEL_ERROR -> LoggerMetrics.LOGGER_LOG4J1_ERROR_COUNT;
-        case LoggerCounter.LEVEL_WARN  -> LoggerMetrics.LOGGER_LOG4J1_WARN_COUNT;
-        case LoggerCounter.LEVEL_INFO  -> LoggerMetrics.LOGGER_LOG4J1_INFO_COUNT;
-        case LoggerCounter.LEVEL_DEBUG -> LoggerMetrics.LOGGER_LOG4J1_DEBUG_COUNT;
-        case LoggerCounter.LEVEL_TRACE -> LoggerMetrics.LOGGER_LOG4J1_TRACE_COUNT;
-        default -> null;
-      };
-      case JUL -> switch (level) {
-        case LoggerCounter.LEVEL_ERROR -> LoggerMetrics.LOGGER_JUL_ERROR_COUNT;
-        case LoggerCounter.LEVEL_WARN  -> LoggerMetrics.LOGGER_JUL_WARN_COUNT;
-        case LoggerCounter.LEVEL_INFO  -> LoggerMetrics.LOGGER_JUL_INFO_COUNT;
-        case LoggerCounter.LEVEL_DEBUG -> LoggerMetrics.LOGGER_JUL_DEBUG_COUNT;
-        case LoggerCounter.LEVEL_TRACE -> LoggerMetrics.LOGGER_JUL_TRACE_COUNT;
-        default -> null;
-      };
-      case UNKNOWN -> switch (level) {
-        case LoggerCounter.LEVEL_ERROR -> LoggerMetrics.LOGGER_UNKNOWN_ERROR_COUNT;
-        case LoggerCounter.LEVEL_WARN  -> LoggerMetrics.LOGGER_UNKNOWN_WARN_COUNT;
-        case LoggerCounter.LEVEL_INFO  -> LoggerMetrics.LOGGER_UNKNOWN_INFO_COUNT;
-        case LoggerCounter.LEVEL_DEBUG -> LoggerMetrics.LOGGER_UNKNOWN_DEBUG_COUNT;
-        case LoggerCounter.LEVEL_TRACE -> LoggerMetrics.LOGGER_UNKNOWN_TRACE_COUNT;
-        default -> null;
-      };
-      default -> null;
-    };
+    Map<String, Metric<Integer>> byLevel = LEVEL_METRICS.get(framework);
+    if (byLevel == null) {
+      return null;
+    }
+    return byLevel.get(level);
   }
 
   private static Metric<Double> ratioMetricFor(LoggerFramework framework) {
-    return switch (framework) {
-      case SLF4J           -> LoggerMetrics.LOGGER_SLF4J_RATIO;
-      case LOMBOK_SLF4J    -> LoggerMetrics.LOGGER_LOMBOK_SLF4J_RATIO;
-      case LOG4J2          -> LoggerMetrics.LOGGER_LOG4J2_RATIO;
-      case LOMBOK_LOG4J2   -> LoggerMetrics.LOGGER_LOMBOK_LOG4J2_RATIO;
-      case LOG4J1          -> LoggerMetrics.LOGGER_LOG4J1_RATIO;
-      case JUL             -> LoggerMetrics.LOGGER_JUL_RATIO;
-      case LOGBACK         -> LoggerMetrics.LOGGER_LOGBACK_RATIO;
-      case COMMONS_LOGGING -> LoggerMetrics.LOGGER_COMMONS_LOGGING_RATIO;
-      case JBOSS           -> LoggerMetrics.LOGGER_JBOSS_RATIO;
-      case UNKNOWN         -> LoggerMetrics.LOGGER_UNKNOWN_RATIO;
-    };
+    return RATIO_METRICS.get(framework);
   }
 
   // -------------------------------------------------------------------------
